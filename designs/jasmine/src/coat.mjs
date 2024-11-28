@@ -186,11 +186,21 @@ function draftcoat({
     )
   )
 
-  paths.outer_edge = new Path()
+  paths.back_seam = new Path()
     .move(points.backCenter)
 
     .line(points.backedge)
     .curve(points.backedgeCp, points.closurebackCp, points.closureback)
+    .hide()
+
+  paths.outer_edge = new Path()
+    /*.move(points.backCenter)
+
+    .line(points.backedge)
+    .curve(points.backedgeCp, points.closurebackCp, points.closureback)
+
+    */
+    .move(points.closureback)
 
     //Round edges of belly closure
     .line(points.bellyoverlapbackStart)
@@ -215,10 +225,14 @@ function draftcoat({
     //Curve back to the center of the neck
     .line(points.neckbandtop_overlap_inner)
     .curve(points.neckbandtopCp1, points.neckCenterCp2, points.neckCenter)
-
     .hide()
 
-  paths.seam = paths.outer_edge.unhide().close().attr('class', 'fabric')
+
+  paths.seam = paths.back_seam
+    .join(paths.outer_edge)
+    .close()
+    .attr('class', 'fabric')
+    .unhide()
 
   //Let the user know about the bias tape requirements
   store.flag.info({
@@ -514,6 +528,12 @@ function draftcoat({
     grainline: true,
   })
 
+  if (options.skirt) {
+    points.skirtnotch = paths.back_seam.shiftFractionAlong(options.skirt_width,25)
+    snippets.skirtnotch = new Snippet('notch', points.skirtnotch)
+    store.set('skirtwidth', paths.back_seam.length() * 0.6)
+  }
+  
   if (options.pocket_type == 'kangaroo') {
     const pocket_width = chesthorizontal * options.pocket_width
     const pocket_depth = vertlength * options.pocket_depth
@@ -659,6 +679,10 @@ export const coat = {
     pocket_vert_offset: { pct: 50, min: 0, max: 100, menu: 'style.pocket' },
     pocket_width: { pct: 40, min: 10, max: 100, menu: 'style.pocket' },
     pocket_depth: { pct: 25, min: 10, max: 50, menu: 'style.pocket' },
+
+
+    skirt: {  bool: false, menu: 'style.skirt' },
+    skirt_width: {  pct:60, min:10, max:100, menu: 'style.skirt'},
   },
   draft: draftcoat,
 }

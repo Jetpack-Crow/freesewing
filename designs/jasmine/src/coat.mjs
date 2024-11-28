@@ -227,12 +227,7 @@ function draftcoat({
     .curve(points.neckbandtopCp1, points.neckCenterCp2, points.neckCenter)
     .hide()
 
-
-  paths.seam = paths.back_seam
-    .join(paths.outer_edge)
-    .close()
-    .attr('class', 'fabric')
-    .unhide()
+  paths.seam = paths.back_seam.join(paths.outer_edge).close().attr('class', 'fabric').unhide()
 
   //Let the user know about the bias tape requirements
   store.flag.info({
@@ -529,11 +524,11 @@ function draftcoat({
   })
 
   if (options.skirt) {
-    points.skirtnotch = paths.back_seam.shiftFractionAlong(options.skirt_width,25)
+    points.skirtnotch = paths.back_seam.shiftFractionAlong(options.skirt_width, 25)
     snippets.skirtnotch = new Snippet('notch', points.skirtnotch)
     store.set('skirtwidth', paths.back_seam.length() * 0.6)
   }
-  
+
   if (options.pocket_type == 'kangaroo') {
     const pocket_width = chesthorizontal * options.pocket_width
     const pocket_depth = vertlength * options.pocket_depth
@@ -680,9 +675,8 @@ export const coat = {
     pocket_width: { pct: 40, min: 10, max: 100, menu: 'style.pocket' },
     pocket_depth: { pct: 25, min: 10, max: 50, menu: 'style.pocket' },
 
-
-    skirt: {  bool: false, menu: 'style.skirt' },
-    skirt_width: {  pct:60, min:10, max:100, menu: 'style.skirt'},
+    skirt: { bool: false, menu: 'style.skirt' },
+    skirt_width: { pct: 60, min: 10, max: 100, menu: 'style.skirt' },
   },
   draft: draftcoat,
 }

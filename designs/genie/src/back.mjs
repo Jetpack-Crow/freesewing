@@ -16,7 +16,12 @@ function draftBack({
 }) {
   points.hem.x = (measurements.hips * (1 + options.hipsEase)) / 4
 
-  points.centertop = new Point(0, points.frontArmholePitch.y)
+  points.armholesplit = paths.backArmhole.shiftFractionAlong(options.yokesplit, 1)
+  points.centertop = new Point(0, points.armholesplit.y)
+
+  delete paths.waist
+
+  delete paths.saBase
 
   paths.saBase = new Path()
     .move(points.cbHem)
@@ -24,15 +29,19 @@ function draftBack({
     .line(points.armhole)
     .curve(points.armholeCp2, points.armholeHollowCp1, points.armholeHollow)
     .curve(points.armholeHollowCp2, points.armholePitchCp1, points.armholePitch)
+    .line(points.armholesplit)
 
-    .line(points.centertop)
     //.join(paths.backArmhole)
+    .line(points.centertop)
+
     .hide()
+
   paths.seam = new Path()
     .move(points.centertop)
     .line(points.cbHips)
     .join(paths.saBase)
     .attr('class', 'fabric')
+    .unhide()
 
   macro('cutonfold', {
     from: points.centertop,
@@ -47,6 +56,10 @@ export const back = {
   name: 'genie.back',
   from: brianBack,
   hide: hidePresets.HIDE_TREE,
-  options: { hipsEase: { pct: 15, min: 0, max: 50, menu: 'fit' } },
+  measurements: ['hips'],
+  options: {
+    hipsEase: { pct: 10, min: -15, max: 50, menu: 'fit' },
+    yokesplit: { pct: 30, min: 5, max: 100, menu: 'style' },
+  },
   draft: draftBack,
 }

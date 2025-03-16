@@ -1,7 +1,11 @@
-import { back as brianBack } from '@freesewing/brian'
+import { back, back as brianBack } from '@freesewing/brian'
 import { hidePresets } from '@freesewing/core'
 
 function draftYoke({ options, Point, Path, points, paths, Snippet, snippets, sa, macro, part }) {
+
+  if (!options.yoke) {
+    return part.hide()
+  }
   points.armholesplit = paths.backArmhole.shiftFractionAlong(options.yokesplit, 1)
 
   points.centerbottom = new Point(0, points.armholesplit.y)
@@ -37,6 +41,7 @@ function draftYoke({ options, Point, Path, points, paths, Snippet, snippets, sa,
 export const yoke = {
   name: 'genie.yoke',
   from: brianBack,
+  after: back,
   hide: hidePresets.HIDE_TREE,
   options: { yokesplit: { pct: 50, min: 5, max: 95, menu: 'style' } },
   draft: draftYoke,

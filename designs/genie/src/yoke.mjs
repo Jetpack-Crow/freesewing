@@ -3,7 +3,19 @@ import { back } from './back.mjs'
 
 import { hidePresets } from '@freesewing/core'
 
-function draftYoke({ options, Point, Path, points, paths, Snippet, snippets, sa, macro, part }) {
+function draftYoke({
+  options,
+  Point,
+  Path,
+  points,
+  paths,
+  Snippet,
+  snippets,
+  sa,
+  macro,
+  part,
+  store,
+}) {
   if (!options.yoke) {
     return part.hide()
   }
@@ -49,11 +61,14 @@ function draftYoke({ options, Point, Path, points, paths, Snippet, snippets, sa,
     paths.sa.line(paths.sa.start())
   }
 
+  store.cutlist.addCut({ cut: false })
   macro('cutonfold', {
     from: points.cbNeck,
     to: points.centerbottom,
     grainline: true,
   })
+
+  store.cutlist.addCut({ cut: 1, from: 'fabric' })
 
   //Remove unneeded paperless macros
   macro('rmHd', 'lShoulder')

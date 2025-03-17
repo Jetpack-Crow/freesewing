@@ -73,7 +73,10 @@ function draftfront({
 
     if (bustDifferential <= 0) {
       log.info('Bust error')
-      store.flag.info('bustError', "The bust dart won't be generated correctly")
+      store.flag.info({
+        title: 'bustError',
+        desc: "Bust is smaller than high bust. The bust dart won't be generated",
+      })
     }
 
     log.info('hps to waist front is ' + measurements.hpsToWaistFront)
@@ -82,8 +85,11 @@ function draftfront({
     let waistDifferential = measurements.hpsToWaistFront - measurements.hpsToWaistBack
 
     if (waistDifferential <= 0) {
-      log.info('Bust error')
-      store.flag.info('waistError', "The bust dart won't be generated correctly")
+      log.info('Waist error')
+      store.flag.info({
+        title: 'waistError',
+        desc: "HPS to waist front is smaller than HPS to waist back. The bust dart won't be generated",
+      })
     }
 
     if (bustDifferential > 0 && waistDifferential > 0) {
@@ -132,7 +138,7 @@ function draftfront({
     .line(points.outerPlacketBottom)
     .close()
 
-  //This isn't working. fix later
+  //Seam allowance
   if (sa) {
     paths.sa = paths.saBase.offset(sa).attr('class', 'fabric sa')
     paths.sa.line(paths.sa.start())
@@ -170,14 +176,14 @@ function draftfront({
       .line(points.pocketBottomOuter)
       .line(points.pocketBottomInner)
       .close()
-      .attr('sa')
+      .attr('class', 'sa')
 
     log.info('Pocket angle is ' + pocketangle)
   }
 
   macro('rmtitle')
   store.cutlist.addCut({ cut: false })
-  store.cutlist.addCut({ cut: 2, material: 'main', identical: false })
+  store.cutlist.addCut({ cut: 2, from: 'fabric', identical: false })
 
   points.title = points.outerPlacketTop.shiftFractionTowards(points.hem, 0.5)
   macro('title', { at: points.title, nr: 1, title: 'front' })

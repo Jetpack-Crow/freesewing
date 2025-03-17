@@ -12,7 +12,7 @@ function draftJettCollarRibbing({
   log,
   measurements,
 }) {
-  let length = measurements.neck * (1 + options.neckEase)
+  let length = measurements.neck * (1 + options.collarEase)
   let width = length * options.ribbedCollarWidth
 
   points.centerTop = new Point(0, 0)

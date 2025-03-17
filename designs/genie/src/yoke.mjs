@@ -12,6 +12,14 @@ function draftYoke({ options, Point, Path, points, paths, Snippet, snippets, sa,
   delete paths.saBase
   delete paths.waist
 
+  //Delete existing points lower than a given cutoff
+  let cutoffy = points.frontArmholePitchCp1.y
+  for (const i in points) {
+    if (points[i].y > cutoffy) {
+      delete points[i]
+    }
+  }
+
   paths.saBase = new Path()
     .move(points.centerbottom)
 
@@ -28,6 +36,17 @@ function draftYoke({ options, Point, Path, points, paths, Snippet, snippets, sa,
     .join(paths.saBase)
     .attr('class', 'fabric')
 
+  if (sa) {
+    paths.sa = new Path()
+      .move(points.centerbottom)
+      .line(points.armholesplit)
+      .join(paths.saBase)
+      .offset(sa)
+      .attr('class', 'fabric sa')
+
+    paths.sa.line(paths.sa.start())
+  }
+
   macro('cutonfold', {
     from: points.cbNeck,
     to: points.centerbottom,
@@ -38,7 +57,7 @@ function draftYoke({ options, Point, Path, points, paths, Snippet, snippets, sa,
 }
 
 export const yoke = {
-  name: 'genie.yoke',
+  name: 'jett.yoke',
   from: brianBack,
   after: back,
   hide: hidePresets.HIDE_TREE,

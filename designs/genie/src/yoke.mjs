@@ -2,7 +2,6 @@ import { back, back as brianBack } from '@freesewing/brian'
 import { hidePresets } from '@freesewing/core'
 
 function draftYoke({ options, Point, Path, points, paths, Snippet, snippets, sa, macro, part }) {
-
   if (!options.yoke) {
     return part.hide()
   }

@@ -16,23 +16,18 @@ function draftBack({
   store,
   log,
 }) {
-
-
-  log.info("text: " + store.get('Test'))
+  log.info('text: ' + store.get('Test'))
 
   // Shorten body to take ribbing into account
   if (options.ribbing) {
-
     //Just redefining ribbing height again until I figure out how to make it work with the store
-    let rh = options.ribbingHeight * (measurements.hpsToWaistBack + measurements.waistToHips)
-    //let rh = store.get('ribbingHeight')
+    //let rh = options.ribbingHeight * (measurements.hpsToWaistBack + measurements.waistToHips)
+    let rh = store.get('ribbingHeight')
 
     for (let p of ['cbHips', 'hem', 'cbHem']) points[p] = points[p].shift(90, rh)
   }
 
   points.hem.x = (measurements.hips * (1 + options.hipsEase)) / 4
-
-
 
   //If using the yoke option, have to redraw a significant chunk of the path
 
@@ -67,9 +62,7 @@ function draftBack({
       to: points.cbHem,
       grainline: true,
     })
-  }
-  else {
-
+  } else {
     //just copying the same code from brian. i'm not sure why just returning it
     //without the other changes doesn't work
     paths.saBase = new Path()
@@ -87,8 +80,6 @@ function draftBack({
       .line(points.cbHips)
       .join(paths.saBase)
       .attr('class', 'fabric')
-
-
   }
 
   return part
@@ -104,7 +95,7 @@ export const back = {
   options: {
     chestEase: { pct: 10, min: -15, max: 50, menu: 'fit' },
     hipsEase: { pct: 10, min: -15, max: 50, menu: 'fit' },
-    yoke: {bool: true, menu: 'construction'},
+    yoke: { bool: true, menu: 'construction' },
     yokesplit: { pct: 30, min: 5, max: 100, menu: 'style' },
   },
   draft: draftBack,

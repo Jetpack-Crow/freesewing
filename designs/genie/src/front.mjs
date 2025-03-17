@@ -60,16 +60,60 @@ function draftfront({
   paths.centerLine = new Path().move(points.cfNeck).line(points.cfHem).attr('class', 'sa')
 
   //apply the full bust adjustment
-  if (options.bustDart) {
+  if (options.bustDart && options.draftForHighBust) {
+    //Add a note to bustDart that it only works if draftForHighBust is selected
     points.bustpoint = new Point(measurements.bustSpan / 2, measurements.hpsToBust)
 
-    //Shift outer points by bust differential / 2
-    log.info('chest is ' + measurements.chest)
+    log.info('chest is ' + measurements.bust)
     log.info('high bust is ' + measurements.highBust)
-    let bustDifferential = measurements.chest - measurements.highBust
+    let bustDifferential = measurements.bust - measurements.highBust
     log.info('Bust differential is ' + bustDifferential)
 
-    points.armhole = points.armhole.shift(0, bustDifferential / 2)
+    if (bustDifferential <= 0) {
+      log.info('Bust error')
+      store.flag.info('bustError', "The bust dart won't be generated correctly")
+    }
+
+    log.info('hps to waist front is ' + measurements.hpsToWaistFront)
+    log.info('hps to waist back is ' + measurements.hpsToWaistBack)
+
+    let waistDifferential = measurements.hpsToWaistFront - measurements.hpsToWaistBack
+
+    if (waistDifferential <= 0) {
+      log.info('Bust error')
+      store.flag.info('waistError', "The bust dart won't be generated correctly")
+    }
+
+    if (bustDifferential > 0 && waistDifferential > 0) {
+      //Shift outer points by bust differential / 2
+      points.armhole = points.armhole.shift(0, bustDifferential / 2)
+      points.hem = points.hem.shift(0, bustDifferential / 2)
+
+      //shift lower points down by waist differential/2 and armhole up by waist differential/2
+      points.hem = points.hem.shift(-90, waistDifferential / 2)
+      points.outerPlacketBottom = points.outerPlacketBottom.shift(-90, waistDifferential / 2)
+      points.armhole = points.armhole.shift(90, waistDifferential / 2)
+
+      //Define the point on the side seam that the dart should be centered on
+      paths.sideSeam = new Path().move(points.armhole).line(points.hem).hide()
+
+      let dartPointShift = points.bustpoint.y - points.armhole.y
+
+      points.sideSeamIntercept = paths.sideSeam.shiftAlong(dartPointShift)
+
+      points.dartTopEdge = paths.sideSeam.shiftAlong(dartPointShift - waistDifferential / 2)
+      points.dartBottomEdge = paths.sideSeam.shiftAlong(dartPointShift + waistDifferential / 2)
+
+      points.dartPoint = points.bustpoint.shiftFractionTowards(
+        points.sideSeamIntercept,
+        options.bustDartOffset
+      )
+
+      paths.bustDart = new Path()
+        .move(points.dartTopEdge)
+        .line(points.dartPoint)
+        .line(points.dartBottomEdge)
+    }
   }
 
   //Redefine base seam and seam allowance to respect placket
@@ -151,7 +195,8 @@ export const front = {
     collarEase: { pct: 2, min: -10, max: 50, menu: 'fit' },
     placketwidth: { pct: 3, min: 0, max: 10, menu: 'style' },
     ribbing: { bool: true, menu: 'construction' },
-    bustDart: { bool: false, menu: 'style' },
+    bustDart: { bool: false, menu: 'fit.bust' },
+    bustDartOffset: { pct: 25, min: 5, max: 60, menu: 'fit.bust' },
     ribbingHeight: { pct: 10, min: 5, max: 15, menu: 'style' },
 
     frontWeltPockets: { bool: true, menu: 'style.pocket' },

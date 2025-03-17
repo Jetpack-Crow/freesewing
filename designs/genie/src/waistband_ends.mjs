@@ -12,13 +12,11 @@ function draftJettWaistbandEnds({
   macro,
   part,
   measurements,
+  store,
 }) {
   if (!options.ribbing) return part.hide()
 
-  //Just redefining ribbing height again until I figure out how to make it work with the store
-  let rh = options.ribbingHeight * (measurements.hpsToWaistBack + measurements.waistToHips)
-  rh = rh * 2
-  //let rh = store.get('ribbingHeight')
+  let rh = store.get('ribbingHeight') * 2
 
   //When the store works and the full belly adjustment is in place,
   // define this as a percentage of the total hip circumference
@@ -35,7 +33,22 @@ function draftJettWaistbandEnds({
     .line(points.topRight)
     .line(points.bottomRight)
     .line(points.bottomLeft)
-    .close()
+    .line(points.topLeft)
+    .reverse()
+
+  if (sa) {
+    paths.sa = paths.seam.offset(sa).attr('class', 'fabric sa')
+    paths.sa.line(paths.sa.start())
+  }
+
+  store.cutlist.setCut({ cut: 2, from: 'fabric' })
+  points.title = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
+
+  macro('title', {
+    at: points.title,
+    nr: 8,
+    title: 'waistband_ends',
+  })
 
   return part
 }

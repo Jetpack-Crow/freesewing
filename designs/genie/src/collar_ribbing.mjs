@@ -11,6 +11,7 @@ function draftJettCollarRibbing({
   part,
   log,
   measurements,
+  store,
 }) {
   let length = measurements.neck * (1 + options.collarEase)
   let width = length * options.ribbedCollarWidth
@@ -33,8 +34,43 @@ function draftJettCollarRibbing({
     .curve(points.halfControlTop, points.outerControlTop, points.outerCenter)
     .curve(points.outerControlBottom, points.halfControlBottom, points.halfBottom)
     .line(points.centerBottom)
+    .reverse()
     .hide()
   paths.seam = paths.saBase.unhide().close()
+
+  if (sa) {
+    paths.sa = paths.saBase.offset(sa).attr('class', 'fabric sa')
+    paths.sa.line(paths.sa.start())
+  }
+
+  macro('hd', {
+    id: 'wTotal',
+    from: points.centerTop,
+    to: points.outerCenter,
+    y: points.centerTop.y - sa - 30,
+  })
+  macro('hd', {
+    id: 'wCurve',
+    from: points.centerTop,
+    to: points.halfTop,
+    y: points.centerTop.y - sa - 15,
+  })
+  macro('vd', {
+    id: 'hTotal',
+    from: points.centerTop,
+    to: points.centerBottom,
+    x: points.centerTop.x - sa - 15,
+  })
+  macro('cutonfold', {
+    from: points.centerTop,
+    to: points.centerBottom,
+    grainline: true,
+  })
+
+  store.cutlist.setCut({ cut: 1, from: 'ribbing', onFold: 'true' })
+
+  points.title = points.centerTop.shiftFractionTowards(points.outerCenter, 0.3)
+  macro('title', { at: points.title, nr: 5, title: 'collar' })
 
   return part
 }

@@ -5,7 +5,6 @@ import { i18n } from '../i18n/index.mjs'
 import { data } from '../data.mjs'
 
 import { i18n as brianI18n } from '@freesewing/brian'
-import { cuff } from '@freesewing/huey'
 
 // Parts
 import { front } from './front.mjs'
@@ -17,6 +16,7 @@ import { waistband } from './waistband.mjs'
 import { waistband_ends } from './waistband_ends.mjs'
 import { collar_ribbing } from './collar_ribbing.mjs'
 import { pocket_bag_front } from './pocket_bag_front.mjs'
+import { cuff } from './cuff.mjs'
 
 // Create new design
 const Genie = new Design({

@@ -1,3 +1,5 @@
+import { front } from './front.mjs'
+
 function draft_pocket_bag_front({
   options,
   Point,
@@ -20,6 +22,9 @@ function draft_pocket_bag_front({
   let body_width = (measurements.hips * (1 + options.hipsEase)) / 4
   let body_length =
     measurements.hpsToWaistBack + measurements.waistToHips - store.get('ribbingHeight')
+
+  let placketwidth = measurements.chest * (1 + options.chestEase) * options.placketwidth
+  let placketoffset = placketwidth / 2
 
   points.pocketBottom = new Point(
     body_width * options.pocketBottomX,
@@ -47,8 +52,8 @@ function draft_pocket_bag_front({
 
   let cornerOffset = pocketWeltOffset + measurements.hips * options.pocketCornerOffset
 
-  points.bagTopLeft = new Point(0, points.pocketTop.y - cornerOffset)
-  points.bagBottomLeft = new Point(0, 0)
+  points.bagTopLeft = new Point(-placketoffset, points.pocketTop.y - cornerOffset)
+  points.bagBottomLeft = new Point(-placketoffset, 0)
   points.bagBottomRight = new Point(points.pocketBottom.x + cornerOffset, 0)
   points.bagTopCorner = new Point(
     points.pocketTop.x + cornerOffset,
@@ -59,13 +64,20 @@ function draft_pocket_bag_front({
     points.pocketBottom.y - cornerOffset
   )
 
-  paths.pocketBag = new Path()
+  paths.saBase = new Path()
     .move(points.bagTopLeft)
     .line(points.bagTopCorner)
     .line(points.bagBottomCorner)
     .line(points.bagBottomRight)
     .line(points.bagBottomLeft)
+    .reverse()
     .close()
+
+  //This isn't working. fix later
+  if (sa) {
+    paths.sa = paths.saBase.offset(sa).attr('class', 'fabric sa')
+    paths.sa.line(paths.sa.start())
+  }
 
   paths.pocketOutline = new Path()
     .move(points.pocketTopInner)
@@ -73,13 +85,27 @@ function draft_pocket_bag_front({
     .line(points.pocketBottomOuter)
     .line(points.pocketBottomInner)
     .close()
-    .attr('sa')
+    .attr('class', 'sa')
+
+  points.placketMarkTop = points.bagTopLeft.shift(0, placketoffset * 2)
+  points.placketMarkBottom = points.bagBottomLeft.shift(0, placketoffset * 2)
+  paths.placketMark = new Path()
+    .move(points.placketMarkTop)
+    .line(points.placketMarkBottom)
+    .attr('class', 'sa')
+
+  store.cutlist.addCut({ cut: 2, from: 'fabric', identical: false })
+  store.cutlist.addCut({ cut: 2, from: 'lining', identical: false })
+
+  points.title = points.bagBottomLeft.shiftFractionTowards(points.bagTopCorner, 0.4)
+  macro('title', { at: points.title, nr: 9, title: 'pocket_bag_front' })
 
   return part
 }
 
 export const pocket_bag_front = {
   name: 'Jett.pocket_bag_front',
+  after: front,
 
   options: {
     pocketCornerOffset: { pct: 1, min: 0, max: 3, menu: 'advanced' },

@@ -1,4 +1,4 @@
-import { front } from '@freesewing/brian'
+import { front } from './front.mjs'
 
 function draftJettWaistbandEnds({
   options,

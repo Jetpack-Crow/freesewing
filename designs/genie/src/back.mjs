@@ -68,6 +68,71 @@ function draftBack({
       to: points.cbHem,
       grainline: true,
     })
+
+    //Remove unneeded paperless macros
+    macro('rmHd', 'lShoulder')
+    macro('rmHd', 'wCFrontToHps')
+    macro('rmLd', 'lShoulder')
+    macro('rmVd', 'hTotal')
+    macro('rmVd', 'hHemToNeckOpeningBottom')
+    macro('rmVd', 'hHemToShoulder')
+    macro('rmVd', 'hHemToArmholePitch')
+    macro('rmVd', 'hHemToArmhole')
+    macro('rmHd', 'wHem')
+    macro('rmVd', 'hHemToWaist')
+    macro('rmPd', 'lShoulderToArmholePitch')
+    macro('rmPd', 'lArmhole')
+
+    //Make new paperless macros
+    macro('hd', {
+      id: 'wHem',
+      from: points.cbHem,
+      to: points.hem,
+      y: points.hem.y + sa + 15,
+    })
+    macro('hd', {
+      id: 'wTop',
+      from: points.centertop,
+      to: points.armholesplit,
+      y: points.centertop.y - sa - 15,
+    })
+    macro('hd', {
+      id: 'wChest',
+      from: points.centertop,
+      to: points.armhole,
+      y: points.armhole.y,
+    })
+    macro('hd', {
+      id: 'armholeHoriz',
+      from: points.armholesplit,
+      to: points.armhole,
+      y: points.centertop.y,
+    })
+
+    macro('vd', {
+      id: 'hHemToWaist',
+      from: points.cbHem,
+      to: points.cbWaist,
+      x: points.cbHips.x - 15,
+    })
+    macro('vd', {
+      id: 'hWaistToChest',
+      from: points.cbWaist,
+      to: points.cbArmhole,
+      x: points.cbHips.x - 15,
+    })
+    macro('vd', {
+      id: 'hChestToTop',
+      from: points.cbArmhole,
+      to: points.centertop,
+      x: points.cbHips.x - 15,
+    })
+    macro('vd', {
+      id: 'hTotal',
+      from: points.cbHem,
+      to: points.centertop,
+      x: points.cbHips.x - 30,
+    })
   } else {
     //just copying the same code from brian. i'm not sure why just returning it
     //without the other changes doesn't work

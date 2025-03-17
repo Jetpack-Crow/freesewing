@@ -64,6 +64,8 @@ function draftfront({
     //Add a note to bustDart that it only works if draftForHighBust is selected
     points.bustpoint = new Point(measurements.bustSpan / 2, measurements.hpsToBust)
 
+    snippets.bustpoint = new Snippet('notch', points.bustpoint)
+
     log.info('chest is ' + measurements.bust)
     log.info('high bust is ' + measurements.highBust)
     let bustDifferential = measurements.bust - measurements.highBust
@@ -172,6 +174,89 @@ function draftfront({
 
     log.info('Pocket angle is ' + pocketangle)
   }
+
+  macro('rmtitle')
+  store.cutlist.addCut({ cut: false })
+  store.cutlist.addCut({ cut: 2, material: 'main', identical: false })
+
+  points.title = points.outerPlacketTop.shiftFractionTowards(points.hem, 0.5)
+  macro('title', { at: points.title, nr: 1, title: 'front' })
+
+  //Remove unneeded paperless macros
+  macro('rmVd', 'hTotal')
+  macro('rmVd', 'hHemToArmholePitch')
+  macro('rmVd', 'hHemToShoulder')
+  macro('rmVd', 'hHemToArmhole')
+  macro('rmVd', 'hHemToWaist')
+  macro('rmVd', 'hHemToNeckOpeningBottom')
+
+  //make new macros
+  macro('hd', {
+    id: 'wHem',
+    from: points.cfHem,
+    to: points.hem,
+    y: points.cfHem.y + sa + 15,
+  })
+  macro('hd', {
+    id: 'wChest',
+    from: points.cfHem,
+    to: points.armhole,
+    y: points.armhole.y,
+  })
+  macro('hd', {
+    id: 'wArmhole',
+    from: points.cfHem,
+    to: points.frontArmholePitch,
+    y: points.frontArmholePitch.y,
+  })
+  macro('hd', {
+    id: 'wPlacket',
+    from: points.outerPlacketTop,
+    to: points.cfNeck,
+    y: points.cfNeck.y - sa - 15,
+  })
+  macro('vd', {
+    id: 'hNeck',
+    from: points.cfNeck,
+    to: points.s3CollarSplit,
+    x: points.cfNeck.x,
+  })
+  macro('vd', {
+    id: 'hTotal',
+    from: points.cfHem,
+    to: points.s3CollarSplit,
+    x: points.armhole.x + sa + 30,
+  })
+  macro('vd', {
+    id: 'hHemToWaist',
+    from: points.cfHem,
+    to: points.cfWaist,
+    x: points.armhole.x + sa + 15,
+  })
+  macro('vd', {
+    id: 'hWaistToChest',
+    from: points.cfWaist,
+    to: points.armhole,
+    x: points.armhole.x + sa + 15,
+  })
+  macro('vd', {
+    id: 'hChestToArmHollow',
+    from: points.armhole,
+    to: points.backArmholePitch,
+    x: points.armhole.x + sa + 15,
+  })
+  macro('vd', {
+    id: 'hArmHollowToShoulder',
+    from: points.backArmholePitch,
+    to: points.s3ArmholeSplit,
+    x: points.armhole.x + sa + 15,
+  })
+  macro('vd', {
+    id: 'hShoulderSlope',
+    from: points.s3ArmholeSplit,
+    to: points.s3CollarSplit,
+    x: points.armhole.x + sa + 15,
+  })
 
   return part
 }

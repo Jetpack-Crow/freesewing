@@ -127,6 +127,7 @@ function draftfront({
     .line(points.s3CollarSplit)
     .join(paths.frontCollar)
     .line(points.outerPlacketTop)
+    .line(points.outerPlacketBottom)
     .close()
 
   //This isn't working. fix later
@@ -176,7 +177,7 @@ function draftfront({
 }
 
 export const front = {
-  name: 'genie.front',
+  name: 'jett.front',
   from: brianFront,
   measurements: [
     'chest',

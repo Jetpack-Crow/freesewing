@@ -1,4 +1,5 @@
-import { back as brianBack, front } from '@freesewing/brian'
+import { back as brianBack } from '@freesewing/brian'
+import { front } from './front.mjs'
 import { hidePresets } from '@freesewing/core'
 
 function draftBack({
@@ -57,6 +58,11 @@ function draftBack({
       .attr('class', 'fabric')
       .unhide()
 
+    if (sa) {
+      paths.sa = paths.saBase.offset(sa).attr('class', 'fabric sa').move(points.cbHips)
+      paths.sa.line(paths.sa.start())
+    }
+
     macro('cutonfold', {
       from: points.centertop,
       to: points.cbHem,
@@ -86,7 +92,7 @@ function draftBack({
 }
 
 export const back = {
-  name: 'genie.back',
+  name: 'jett.back',
   from: brianBack,
   after: front,
 

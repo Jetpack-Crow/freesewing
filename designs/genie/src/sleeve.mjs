@@ -1,4 +1,5 @@
-import { sleeve as briansleeve, front } from '@freesewing/brian'
+import { sleeve as briansleeve } from '@freesewing/brian'
+import { front } from './front.mjs'
 import { hidePresets } from '@freesewing/core'
 
 function draftsleeve({
@@ -40,7 +41,7 @@ function draftsleeve({
 }
 
 export const sleeve = {
-  name: 'genie.sleeve',
+  name: 'jett.sleeve',
   from: briansleeve,
   after: front,
   hide: hidePresets.HIDE_TREE,

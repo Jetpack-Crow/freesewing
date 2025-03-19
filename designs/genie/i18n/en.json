@@ -1,6 +1,6 @@
 {
   "t": "Jett jacket",
-  "d": "A FreeSewing pattern for a casual jacket",
+  "d": "A FreeSewing pattern for a bomber or letterman jacket",
   "p": { 
     "back": "Back",
     "front": "Front",
@@ -9,6 +9,7 @@
     "sleeve": "Sleeve",
     "collar_ribbing": "Collar ribbing",
     "cuff": "Cuff",
+    "yoke": "Yoke",
     "pocket_bag_front": "Front pocket bag",
     "waistband": "Waistband"
   

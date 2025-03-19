@@ -70,7 +70,7 @@ function draftJettCollarRibbing({
   store.cutlist.setCut({ cut: 1, from: 'ribbing', onFold: 'true' })
 
   points.title = points.centerTop.shiftFractionTowards(points.outerCenter, 0.3)
-  macro('title', { at: points.title, nr: 5, title: 'collar' })
+  macro('title', { at: points.title, nr: 5, title: 'collar_ribbing' })
 
   return part
 }
@@ -80,7 +80,7 @@ export const collar_ribbing = {
   measurements: ['neck'],
   options: {
     collarEase: { pct: 2, min: -10, max: 50, menu: 'fit' },
-    ribbedCollarWidth: { pct: 10, min: 2, max: 40, menu: 'style.collar' },
+    ribbedCollarWidth: { pct: 20, min: 1, max: 80, menu: 'style.collar' },
     ribbedCollarCurve: { pct: 40, min: 0, max: 50, menu: 'style.collar' },
   },
   draft: draftJettCollarRibbing,

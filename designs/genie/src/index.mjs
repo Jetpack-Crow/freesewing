@@ -1,8 +1,11 @@
-import { Design } from '@freesewing/core'
-import { i18n } from '../i18n/index.mjs'
+import { Design, mergeI18n } from '@freesewing/core'
 import { data } from '../data.mjs'
 
+//import { i18n as brianI18n } from '@freesewing/brian'
+
 import { i18n as brianI18n } from '@freesewing/brian'
+import { i18n as jetti18n } from '../i18n/index.mjs'
+const i18n = mergeI18n([brianI18n, jetti18n])
 
 // Parts
 import { front } from './front.mjs'

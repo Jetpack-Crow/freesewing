@@ -15,6 +15,7 @@ function draftfront({
   measurements,
   store,
   log,
+  utils,
 }) {
   store.set('Test', 'test')
 
@@ -28,6 +29,54 @@ function draftfront({
     let rh = options.ribbingHeight * (measurements.hpsToWaistBack + measurements.waistToHips)
     for (let p of ['hem', 'cfHem']) points[p] = points[p].shift(90, rh)
     store.set('ribbingHeight', rh)
+  } else store.set('ribbingHeight', 0)
+
+  points.cfNeck = points.cfNeck.shift(-90, measurements.neck * options.neckShiftForward)
+  points.cfNeckCp1 = points.cfNeckCp1.shift(-90, measurements.neck * options.neckShiftForward)
+  points.frontNeckCpEdge = points.frontNeckCpEdge.shift(
+    -90,
+    measurements.neck * options.neckShiftForward
+  )
+  points.neckCp2Front = points.neckCp2Front.shift(-90, measurements.neck * options.neckShiftForward)
+
+  // Adapt the shoulder line according to the relevant options
+  // Don't bother with less than 10% as that's just asking for trouble
+  if (options.s3Collar < 0.1 && options.s3Collar > -0.1) {
+    points.s3CollarSplit = points.hps
+    paths.frontCollar = new Path()
+      .move(points.hps)
+      .curve(points.neckCp2Front, points.cfNeckCp1, points.cfNeck)
+      .hide()
+  } else if (options.s3Collar > 0) {
+    // Shift shoulder seam forward on the collar side
+    points.s3CollarSplit = utils.curveIntersectsY(
+      points.hps,
+      points.neckCp2Front,
+      points.cfNeckCp1,
+      points.cfNeck,
+      store.get('s3CollarMaxFront') * options.s3Collar
+    )
+    paths.frontCollar = new Path()
+      .move(points.hps)
+      .curve(points.neckCp2Front, points.cfNeckCp1, points.cfNeck)
+      .split(points.s3CollarSplit)[1]
+      .hide()
+  } else if (options.s3Collar < 0) {
+    // Shift shoulder seam backward on the collar side
+    points.s3CollarSplit = utils.curveIntersectsY(
+      points.mirroredCbNeck,
+      points.mirroredCbNeck,
+      points.mirroredNeckCp2,
+      points.hps,
+      store.get('s3CollarMaxBack') * options.s3Collar
+    )
+    paths.frontCollar = new Path()
+      .move(points.hps)
+      .curve_(points.mirroredNeckCp2, points.mirroredCbNeck)
+      .split(points.s3CollarSplit)[0]
+      .reverse()
+      .join(new Path().move(points.hps).curve(points.neckCp2Front, points.cfNeckCp1, points.cfNeck))
+      .hide()
   }
 
   let placketwidth = measurements.chest * (1 + options.chestEase) * options.placketwidth
@@ -300,6 +349,7 @@ export const front = {
     chestEase: { pct: 10, min: -10, max: 50, menu: 'fit' },
     collarEase: { pct: 2, min: -10, max: 50, menu: 'fit' },
     placketwidth: { pct: 3, min: 0, max: 10, menu: 'style' },
+    neckShiftForward: { pct: 8.8, min: 0, max: 40, menu: 'style' },
     ribbing: { bool: true, menu: 'construction' },
     bustDart: { bool: false, menu: 'fit.bust' },
     bustDartOffset: { pct: 25, min: 5, max: 90, menu: 'fit.bust' },

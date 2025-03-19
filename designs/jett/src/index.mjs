@@ -20,7 +20,7 @@ import { pocket_bag_front } from './pocket_bag_front.mjs'
 import { cuff } from './cuff.mjs'
 
 // Create new design
-const Genie = new Design({
+const Jett = new Design({
   data,
   parts: [
     front,
@@ -47,5 +47,5 @@ export {
   collar_ribbing,
   pocket_bag_front,
   i18n,
-  Genie,
+  Jett,
 }

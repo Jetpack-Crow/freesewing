@@ -1,4 +1,4 @@
-# Change log for: @freesewing/genie
+# Change log for: @freesewing/jett
 
 
 ## 3.0.0 (2023-09-30)

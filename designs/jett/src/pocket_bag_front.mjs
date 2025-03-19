@@ -108,7 +108,7 @@ export const pocket_bag_front = {
   after: front,
 
   options: {
-    pocketCornerOffset: { pct: 1, min: 0, max: 3, menu: 'advanced' },
+    pocketCornerOffset: { pct: 2, min: 0, max: 4, menu: 'advanced' },
   },
 
   draft: draft_pocket_bag_front,

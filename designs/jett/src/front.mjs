@@ -101,12 +101,14 @@ function draftfront({
     .move(points.centerPlacketTop)
     .line(points.centerPlacketBottom)
     .attr('class', 'sa')
+    .setClass('lining')
+  //.hide()
   paths.edgePlacketLine = new Path()
     .move(points.outerPlacketTop)
     .line(points.outerPlacketBottom)
     .attr('class', 'sa')
 
-  paths.centerLine = new Path().move(points.cfNeck).line(points.cfHem).attr('class', 'sa')
+  paths.centerLine = new Path().move(points.cfNeck).line(points.cfHem).attr('class', 'sa').hide()
 
   //apply the full bust adjustment
   if (options.bustDart && options.draftForHighBust) {
@@ -122,9 +124,8 @@ function draftfront({
 
     if (bustDifferential <= 0) {
       log.info('Bust error')
-      store.flag.info({
-        title: 'bustError',
-        desc: "Bust is smaller than high bust. The bust dart won't be generated",
+      store.flag.note({
+        msg: 'jett:bustWarning',
       })
     }
 
@@ -136,8 +137,7 @@ function draftfront({
     if (waistDifferential <= 0) {
       log.info('Waist error')
       store.flag.info({
-        title: 'waistError',
-        desc: "HPS to waist front is smaller than HPS to waist back. The bust dart won't be generated",
+        msg: 'jett:waistWarning',
       })
     }
 
@@ -225,7 +225,16 @@ function draftfront({
       -(points.pocketBottom.y - points.pocketTop.y) / (points.pocketBottom.x - points.pocketTop.x)
     let pocketangle = (Math.atan(pocketslope) * 180) / 3.14159
 
+    paths.pocketLine = new Path().move(points.pocketTop).line(points.pocketBottom)
+    //.hide()
+
     let pocketWeltOffset = (options.pocketWeltWidth * measurements.hips) / 10
+
+    store.set('pocketLength', paths.pocketLine.length())
+
+    log.info('Pocket length is ' + paths.pocketLine.length())
+
+    store.set('pocketWidth', pocketWeltOffset * 2)
 
     points.pocketTopInner = points.pocketTop.shift(pocketangle - 90, pocketWeltOffset)
     points.pocketTopOuter = points.pocketTop.shift(pocketangle + 90, pocketWeltOffset)
@@ -247,6 +256,7 @@ function draftfront({
   macro('rmtitle')
   store.cutlist.addCut({ cut: false })
   store.cutlist.addCut({ cut: 2, from: 'fabric', identical: false })
+  store.cutlist.addCut({ cut: 2, from: 'lining', identical: false })
 
   points.title = points.outerPlacketTop.shiftFractionTowards(points.hem, 0.5)
   macro('title', { at: points.title, nr: 1, title: 'front' })

@@ -15,6 +15,7 @@ import { yoke } from './yoke.mjs'
 import { sleeve } from './sleeve.mjs'
 import { waistband } from './waistband.mjs'
 import { waistband_ends } from './waistband_ends.mjs'
+import { pocket_welt } from './pocket_welt.mjs'
 import { collar_ribbing } from './collar_ribbing.mjs'
 import { pocket_bag_front } from './pocket_bag_front.mjs'
 import { cuff } from './cuff.mjs'
@@ -29,6 +30,7 @@ const Jett = new Design({
     sleeve,
     waistband,
     waistband_ends,
+    pocket_welt,
     collar_ribbing,
     pocket_bag_front,
     cuff,
@@ -43,6 +45,7 @@ export {
   sleeve,
   waistband,
   waistband_ends,
+  pocket_welt,
   cuff,
   collar_ribbing,
   pocket_bag_front,

@@ -12,7 +12,8 @@
     "yoke": "Yoke",
     "pocket_welt": "Pocket welt",
     "pocket_bag_front": "Front pocket bag",
-    "waistband": "Waistband"
+    "waistband": "Waistband",
+    "waistband_ends": "Waistband extension"
   
   },
   "s": {
@@ -51,14 +52,14 @@
       "d": "Whether to generate a waistband made of stretchy ribbing"
     },
     "ribbingEndsPercentage": {
-      "t": "Ribbing ends percentage",
+      "t": "Waistband extension percentage",
       "d": "How wide to make the button placket extension at the ends of the waistband"
     },
     "neckShiftForward": {
       "t": "Neck shift forward",
       "d": "Cut the neck lower in the front than in the back, by this percentage of the neck measurement"
     },   
-     "yokeSplit": {
+     "yokesplit": {
       "t": "Yoke height",
       "d": "How tall to make the yoke"
     },
@@ -73,7 +74,15 @@
     },
     "closureCount": {
       "t": "Closure count",
-      "d": "How many buttons or snaps to use. The last one goes on the waistband ends"
+      "d": "How many buttons or snaps to use. The last one goes on the waistband extension"
+    },
+    "yoke": {
+      "t": "Yoke",
+      "d": "Whether to draft the back panel with a yoke across the shoulders. The yoke does no extra shaping right now, so this doesn't affect the fit."
+    },
+    "placketwidth": {
+      "t": "Placket width",
+      "d": "How wide to make the button placket, as a percentage of the chest measurement"
     }
    }
 }

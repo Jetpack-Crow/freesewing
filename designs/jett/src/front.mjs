@@ -80,6 +80,7 @@ function draftfront({
   }
 
   let placketwidth = measurements.chest * (1 + options.chestEase) * options.placketwidth
+  store.set('placketWidth', placketwidth)
 
   //Create points for placket
   points.innerPlacketTop = points.cfNeck.shift(0, placketwidth / 2)
@@ -109,6 +110,20 @@ function draftfront({
     .attr('class', 'sa')
 
   paths.centerLine = new Path().move(points.cfNeck).line(points.cfHem).attr('class', 'sa').hide()
+
+  //Draw the buttons
+  let j = options.closureCount
+  j--
+  let closurePoints = []
+
+  points.topButton = points.cfNeck.shiftTowards(points.cfHem, placketwidth / 2)
+  snippets['top_button'] = new Snippet('button', points.topButton)
+  for (let i = 1; i < j; i++) {
+    closurePoints.push(points.topButton.shiftFractionTowards(points.cfHem, i / j))
+  }
+  for (let b in closurePoints) {
+    snippets[b + '_button'] = new Snippet('button', closurePoints[b])
+  }
 
   //apply the full bust adjustment
   if (options.bustDart && options.draftForHighBust) {
@@ -225,8 +240,7 @@ function draftfront({
       -(points.pocketBottom.y - points.pocketTop.y) / (points.pocketBottom.x - points.pocketTop.x)
     let pocketangle = (Math.atan(pocketslope) * 180) / 3.14159
 
-    paths.pocketLine = new Path().move(points.pocketTop).line(points.pocketBottom)
-    //.hide()
+    paths.pocketLine = new Path().move(points.pocketTop).line(points.pocketBottom).hide()
 
     let pocketWeltOffset = (options.pocketWeltWidth * measurements.hips) / 10
 
@@ -358,7 +372,7 @@ export const front = {
     hipsEase: { pct: 5, min: -10, max: 50, menu: 'fit' },
     chestEase: { pct: 10, min: -10, max: 50, menu: 'fit' },
     collarEase: { pct: 2, min: -10, max: 50, menu: 'fit' },
-    placketwidth: { pct: 3, min: 0, max: 10, menu: 'style' },
+    placketwidth: { pct: 3, min: 0, max: 10, menu: 'style.placket' },
     neckShiftForward: { pct: 8.8, min: 0, max: 40, menu: 'style' },
     ribbing: { bool: true, menu: 'construction' },
     bustDart: { bool: false, menu: 'fit.bust' },
@@ -374,6 +388,8 @@ export const front = {
     pocketTopY: { pct: 30, min: 0, max: 50, menu: 'style.pocket' },
 
     pocketWeltWidth: { pct: 7, min: 0, max: 20, menu: 'style.pocket' },
+
+    closureCount: { count: 7, min: 3, max: 12, menu: 'style.placket' },
   },
   draft: draftfront,
 }

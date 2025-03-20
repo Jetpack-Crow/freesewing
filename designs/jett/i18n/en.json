@@ -16,9 +16,64 @@
   
   },
   "s": {
-      "bustWarning": "Bust is smaller than high bust. The bust dart won't be generated",
-      "waistWarning": "HPS to waist front is smaller than HPS to waist back. The bust dart won't be generated.\nDid you take the HPS to waist front measurement down over the bust?"
-
+      "bustWarning.t": "The bust dart won't be generated",
+      "bustWarning.d": "Chest is smaller than high bust. If these measurements are accurate, you don't need a bust dart.",
+      "waistWarning.t": "The bust dart won't be generated",
+      "waistWarning.d": "HPS to waist front is smaller than HPS to waist back.\nDid you take the HPS to waist front measurement down over the bust?"
    },
-  "o": { }
+  "o": {
+    "hipsEase": {
+      "t": "Hips ease",
+      "d": "The amount of ease at your hips"
+    },
+    "ribbingHeight": {
+      "t": "Ribbing height",
+      "d": "Controls the height of the ribbing"
+    },
+    "ribbingStretch": {
+      "t": "Ribbing stretch",
+      "d": "Use this to adapt the pattern to how stretchy the ribbing that you are using is."
+    },
+    "bustDart": {
+      "t": "Bust dart (EXPERIMENTAL)",
+      "d": "Draft the pattern with a full bust adjustment and a bust dart. This only takes effect if Draft for High Bust is true."
+    },
+    "bustDartHeight": {
+      "t": "Bust dart height",
+      "d": "Where to place the bust dart on the side seam"
+    },
+    "bustDartOffset": {
+      "t": "Bust dart offset",
+      "d": "How close to the bust apex to start the bust dart"
+    },
+    "ribbing": {
+      "t": "Ribbing",
+      "d": "Whether to generate a waistband made of stretchy ribbing"
+    },
+    "ribbingEndsPercentage": {
+      "t": "Ribbing ends percentage",
+      "d": "How wide to make the button placket extension at the ends of the waistband"
+    },
+    "neckShiftForward": {
+      "t": "Neck shift forward",
+      "d": "Cut the neck lower in the front than in the back, by this percentage of the neck measurement"
+    },   
+     "yokeSplit": {
+      "t": "Yoke height",
+      "d": "How tall to make the yoke"
+    },
+    "ribbedCollarWidth": {
+      "t": "Ribbed collar width",
+      "d": "How wide to make the ribbed collar"
+    },
+
+    "ribbedCollarCurve": {
+      "t": "Ribbed collar curve",
+      "d": "How far the ends of the ribbed collar curve"
+    },
+    "closureCount": {
+      "t": "Closure count",
+      "d": "How many buttons or snaps to use. The last one goes on the waistband ends"
+    }
+   }
 }

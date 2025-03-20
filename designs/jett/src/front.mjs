@@ -166,11 +166,14 @@ function draftfront({
       points.outerPlacketBottom = points.outerPlacketBottom.shift(-90, waistDifferential)
 
       //Define the point on the side seam that the dart should be centered on
+
+      let sideseamangle = points.hem.angle(points.armhole)
       paths.sideSeam = new Path().move(points.armhole).line(points.hem).hide()
+
+      //points.FBA_cut_1 = points.bustpoint.shift(sideseamangle, measurements.bust/4)
 
       points.sideSeamIntercept = paths.sideSeam.shiftFractionAlong(options.bustDartHeight)
 
-      let sideseamangle = points.hem.angle(points.armhole)
       points.dartTopEdge = points.sideSeamIntercept.shift(sideseamangle, waistDifferential / 2)
       points.dartBottomEdge = points.sideSeamIntercept.shift(
         sideseamangle - 180,
@@ -198,6 +201,12 @@ function draftfront({
     } else {
       paths.sideSeam = new Path().move(points.hem).line(points.armhole)
     }
+  } else if (options.bustRotations) {
+    points.bustpoint = new Point(measurements.bustSpan / 2, measurements.hpsToBust)
+
+    snippets.bustpoint = new Snippet('notch', points.bustpoint)
+
+    paths.sideSeam = new Path().move(points.hem).line(points.armhole)
   } else {
     paths.sideSeam = new Path().move(points.hem).line(points.armhole).hide()
   }
@@ -390,6 +399,7 @@ export const front = {
     pocketWeltWidth: { pct: 7, min: 0, max: 20, menu: 'style.pocket' },
 
     closureCount: { count: 7, min: 3, max: 12, menu: 'style.placket' },
+    bustRotations: { bool: false, menu: 'fit.bust' },
   },
   draft: draftfront,
 }

@@ -64,6 +64,11 @@ function draftJettWaistbandEnds({
     x: points.bottomLeft.x - sa - 15,
   })
 
+  let placketWidth = store.get('placketWidth')
+
+  points.buttonPoint = new Point(placketWidth, (rh * 3) / 4)
+  snippets['bottom_button'] = new Snippet('button', points.buttonPoint)
+
   return part
 }
 

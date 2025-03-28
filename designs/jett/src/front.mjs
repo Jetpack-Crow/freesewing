@@ -210,7 +210,7 @@ function draftfront({
     } else {
       paths.sideSeam = new Path().move(points.hem).line(points.armhole)
     }
-  } else if (options.bustDart == 'Rotation') {
+  } else if (options.bustDart == 'Rotation' && options.draftForHighBust) {
     points.bustpoint = new Point(measurements.bustSpan / 2, measurements.hpsToBust)
     let sideseamangle = points.hem.angle(points.armhole)
     snippets.bustpoint = new Snippet('notch', points.bustpoint)
@@ -557,7 +557,7 @@ export const front = {
     chestEase: { pct: 10, min: -10, max: 50, menu: 'fit' },
 
     placketwidth: { pct: 3, min: 0, max: 10, menu: 'style.placket' },
-    neckShiftForward: { pct: 8.8, min: 0, max: 40, menu: 'style' },
+    neckShiftForward: { pct: 0, min: 0, max: 40, menu: 'style' },
     collarEase: { pct: 2, min: -10, max: 50, menu: 'fit' },
 
     bustDart: { dflt: 'None', list: ['None', 'Rotation', 'Original'], menu: 'fit.bust' },

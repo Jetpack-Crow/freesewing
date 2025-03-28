@@ -1,0 +1,64 @@
+---
+title: "Jett Jacket: Sewing Instructions"
+sidebar_label: Sewing Instructions
+sidebar_position: 20
+---
+
+# Before You Start
+
+This pattern is hard to fit around the arms in the same ways Simon is hard to fit around the arms, and complicated at the waistband and cuffs in similar ways to how Huey and Hugo are complicated at the waistband and cuffs. If you've already made those things, this pattern will feel pretty familiar. If you haven't, take it slow and make a muslin out of some cheap cloth first.
+
+## Decide on button placket layer
+Decide whether to make your button placket out of the outer shell or the lining. The button placket will involve 3 layers of the placket fabric folded over - if that'll be unwieldy with your outer shell fabric, use the lining for it instead.
+For whichever material you're **not** using for the button placket, take the fronts and trim them to the green line with no seam allowance. This'll let their raw edges sit snug inside the button placket.
+
+# Sewing Instructions
+
+## Sew the pockets
+   On both of the outer front pieces, follow the welt pocket instructions from this video to attach the welts and pocket bags. 
+   Close the pocket bags around their edges, then baste them to the bottom hem and the placket side of the front pieces. The edges of the pocket bag should come just up to the green line from earlier.
+
+## Sew the bust dart seams, if you have them
+
+## Assemble the body
+   Follow the Brian assembly instructions from here https://freesewing.org/docs/designs/brian/instructions for both your shell pieces and your lining pieces. 
+   The "Right" side of the lining is the side that will be against your body when the jacket is complete. 
+   Don't worry about finishing these seams, because they'll all be enclosed within the lining, but press each seam open flat as you go.
+
+## Prepare the cuffs
+   With good sides together, sew the short edges of the cuffs together to create two bands. Press these seams flat, then fold the cuffs in half lengthwise, matching the wrong sides.
+
+## Attach the cuffs to the shell
+   Take your shell and turn the sleeves right side out. Matching seams and raw edges, pin the cuffs to the sleeves good sides together. The cuffs will be shorter than the edges of the sleeves, so you'll need to stretch the cuffs as they're sewn. Pin this area carefully, moving it around to be sure the stretch is evenly distributed, before you sew around the end of the sleeve to attach the cuff. Press the seam allowances up the sleeve.
+
+## Attach the collar
+   Fold the collar in half lengthwise, wrong sides together. Baste along the edge at the standard seam allowance to hold it together. Attach this to the neck of the shell the same way you attached the cuffs - line it up on the right side, stretch and pin it carefully, sew along the same line of stitches you just basted, and press the seam allowance down into the body of the coat.
+
+## Prepare the waistband
+   Sew one waistband end piece to each end of the long ribbing piece. Press these seams flat.
+   Fold the long piece in half lengthwide, right sides together, and sew the two ends. Turn it inside out so the right sides are out, and press these seams at the corners so they're crisp.
+
+## Attach the waistband
+   This step depends on which side you picked for the button placket in step 1. You'll be sewing the waistband to whichever piece you didn't trim. Align the edges of the waistband ends at the same green lines and pin them in place. Just like with the cuffs, the waistband is shorter than the jacket hem, so you'll need to evenly stretch it between the two waistband ends before you sew it down.
+
+## Prepare to attach the lining
+    Fold the ends of the jacket shell sleeves to the wrong side at the standard seam allowance and press.
+    Turn the jacket lining "wrong" side out and the jacket shell right side out.
+    You'll have to take the ends of the jacket lining sleeves and feed them up through the sleeves of the shell, so they poke out the ends. Be careful not to twist the sleeves as you do this - the seam at the bottom of the sleeves should stay aligned.
+
+## Attach the lining at the sleeves
+    This is the hardest step. Starting at the bottom seam, align the folded-over edge of the sleeve lining with the line of stitches where you attached the cuff. Work slowly. Use a pin every centimeter/half-inch or so. Then sew this seam right at the folded edge. You're working in a small circle and through a lot of layers, so be careful and be patient.
+
+## Sew (most of) the button plackets
+    On each side, fold the button placket over at the seam allowance and press, then fold it at the green line and press. You should be able to slip the other layer of fabric and the pocket bag neatly up to the folded edge. Edge-stitch this down, but leave about an inch free at the top and bottom of the seam.
+
+## Fold the button plackets and sew the waistband
+    Fold the ends of the button plackets up into the jacket as you fold and align the end of the second layer with the line of stitching on the waistband, just like you did with the cuffs.  ![Folded hem for reference](folded_hem.jpg)
+    Sew this in place just like you did for the cuffs.
+
+## Attach the lining at the collar
+Repeat that same process at the neck, folding under the button placket and aligning the folded edge of the lining at the seam line.
+
+## Finish sewing the last half-inch at the top and bottom of the button placket. Attach buttons or snaps to the button plackets. The bottom button or snap should go on the waistband ends.
+
+## And you're done!

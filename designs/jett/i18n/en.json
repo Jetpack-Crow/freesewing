@@ -57,7 +57,7 @@
     },
     "neckShiftForward": {
       "t": "Neck shift forward",
-      "d": "Cut the neck lower in the front than in the back, by this percentage of the neck measurement"
+      "d": "Cut the neck lower in the front than Brian's default neckline, by this percentage of the neck measurement"
     },   
      "yokesplit": {
       "t": "Yoke height",

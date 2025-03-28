@@ -37,7 +37,7 @@
     },
     "bustDart": {
       "t": "Bust dart (EXPERIMENTAL)",
-      "d": "Draft the pattern with a full bust adjustment and a bust dart. This only takes effect if Draft for High Bust is true."
+      "d": "Draft the pattern with a full bust adjustment and a bust dart. This only takes effect if Draft for High Bust is true.\nThese aren't guaranteed to preserve the armhole or side seam lengths. Proceed with caution."
     },
     "bustDartHeight": {
       "t": "Bust dart height",
@@ -83,6 +83,26 @@
     "placketwidth": {
       "t": "Placket width",
       "d": "How wide to make the button placket, as a percentage of the chest measurement"
+    },
+    "useBellyAdjustment": {
+      "t": "Use full belly adjustment",
+      "d": "This widens the front piece to account for a waist wider than the hip measurement. To use this, make sure to take the waist measurement at the fullest part of your belly"
+    },
+    "bustDart.Original": {
+      "t": "Original",
+      "d": "The first FBA implementation written, shifting points directly instead of simulating the cuts and rotations of a paper adjustment. This causes problems when used with the belly adjustment - use Rotation if you need both adjustments."
+    },
+    "bustDart.Rotation": {
+      "t": "Rotation-based",
+      "d": "Rotation-based FBA implementation. This one actually cuts apart and pivots the pattern like it's making the adjustment on paper. More reliable results, but double-check the armhole carefully."
+    },
+    "bustDart.None": {
+      "t": "None",
+      "d": "No full bust adjustment"
+    },
+    "armCutAngle": {
+      "t": "Armhole cut angle",
+      "d": "This applies only to the rotation-based implementation. Tweak this if the armhole looks wrong."
     }
    }
 }

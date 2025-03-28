@@ -1,3 +1,4 @@
+import { front } from '@freesewing/brian'
 import { draftRibbing } from './shared.mjs'
 
 //This code is taken from Huey with only the change for the ribbing ends, but it'll be using slightly
@@ -7,8 +8,7 @@ function draftJettWaistband({ points, measurements, options, macro, store, part 
   if (!options.ribbing) return part.hide()
 
   let width =
-    measurements.hips *
-    (1 + options.hipsEase) *
+    (((1 + options.hipsEase) * measurements.hips) / 2 + store.get('frontWaistLength') * 2) *
     (1 - options.ribbingStretch) *
     (1 - options.ribbingEndsPercentage)
 
@@ -32,6 +32,7 @@ function draftJettWaistband({ points, measurements, options, macro, store, part 
 
 export const waistband = {
   name: 'Jett.waistband',
+  after: front,
   options: {
     ribbingStretch: { pct: 15, min: 0, max: 30, menu: 'fit' },
     ribbingEndsPercentage: { pct: 5, min: 0, max: 20, menu: 'construction' },

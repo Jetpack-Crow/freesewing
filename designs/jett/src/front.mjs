@@ -31,6 +31,7 @@ function draftfront({
     store.set('ribbingHeight', rh)
   } else store.set('ribbingHeight', 0)
 
+  //Shift the neck forward slightly from Brian default
   points.cfNeck = points.cfNeck.shift(-90, measurements.neck * options.neckShiftForward)
   points.cfNeckCp1 = points.cfNeckCp1.shift(-90, measurements.neck * options.neckShiftForward)
   points.frontNeckCpEdge = points.frontNeckCpEdge.shift(
@@ -109,24 +110,22 @@ function draftfront({
     .line(points.outerPlacketBottom)
     .attr('class', 'sa')
 
-  paths.centerLine = new Path().move(points.cfNeck).line(points.cfHem).attr('class', 'sa').hide()
+  //Save the current side seam width and waist width?
 
-  //Draw the buttons
-  let j = options.closureCount
-  j--
-  let closurePoints = []
+  paths.sideSeam = new Path().move(points.armhole).line(points.hem).hide()
+  let sideseamlength = paths.sideSeam.length()
+  points.waist = points.waist.shift(0, 100)
+  paths.waist = new Path().move(points.cfWaist).line(points.waist).hide()
 
-  points.topButton = points.cfNeck.shiftTowards(points.cfHem, placketwidth / 2)
-  snippets['top_button'] = new Snippet('button', points.topButton)
-  for (let i = 1; i < j; i++) {
-    closurePoints.push(points.topButton.shiftFractionTowards(points.cfHem, i / j))
-  }
-  for (let b in closurePoints) {
-    snippets[b + '_button'] = new Snippet('button', closurePoints[b])
-  }
+  points.waist = paths.waist.intersects(paths.sideSeam)[0]
+  paths.waist = new Path().move(points.cfWaist).line(points.waist).hide()
+
+  let waistOriginal = points.waist.x
+  log.info('pre-adjustment waist X: ' + waistOriginal)
+  log.info('pre-adjustment side seam: ' + sideseamlength)
 
   //apply the full bust adjustment
-  if (options.bustDart && options.draftForHighBust) {
+  if (options.bustDart == 'Original' && options.draftForHighBust) {
     //Add a note to bustDart that it only works if draftForHighBust is selected
     points.bustpoint = new Point(measurements.bustSpan / 2, measurements.hpsToBust)
 
@@ -170,9 +169,19 @@ function draftfront({
       let sideseamangle = points.hem.angle(points.armhole)
       paths.sideSeam = new Path().move(points.armhole).line(points.hem).hide()
 
-      //points.FBA_cut_1 = points.bustpoint.shift(sideseamangle, measurements.bust/4)
+      points.FBA_cut_A_end = points.bustpoint.shift(sideseamangle - 90, measurements.bust / 4)
 
-      points.sideSeamIntercept = paths.sideSeam.shiftFractionAlong(options.bustDartHeight)
+      paths.FBA_cut_A = new Path().move(points.bustpoint).line(points.FBA_cut_A_end).hide()
+
+      if (paths.sideSeam.intersects(paths.FBA_cut_A).length == 0) {
+        points.sideSeamIntercept = paths.sideSeam.shiftFractionAlong(options.bustDartHeight)
+      } else {
+        points.sideSeamIntercept = paths.sideSeam.intersects(paths.FBA_cut_A)[0]
+      }
+
+      /*if (!points.sideSeamIntercept) {
+          points.sideSeamIntercept = paths.sideSeam.shiftFractionAlong(options.bustDartOffset)
+        }*/
 
       points.dartTopEdge = points.sideSeamIntercept.shift(sideseamangle, waistDifferential / 2)
       points.dartBottomEdge = points.sideSeamIntercept.shift(
@@ -201,19 +210,183 @@ function draftfront({
     } else {
       paths.sideSeam = new Path().move(points.hem).line(points.armhole)
     }
-  } else if (options.bustRotations) {
+  } else if (options.bustDart == 'Rotation') {
     points.bustpoint = new Point(measurements.bustSpan / 2, measurements.hpsToBust)
-
+    let sideseamangle = points.hem.angle(points.armhole)
     snippets.bustpoint = new Snippet('notch', points.bustpoint)
 
-    paths.sideSeam = new Path().move(points.hem).line(points.armhole)
+    paths.sideSeam = new Path().move(points.hem).line(points.armhole).reverse()
+
+    points.FBA_cut_A_end = points.bustpoint.shift(sideseamangle - 90, measurements.bust / 4)
+    paths.FBA_cut_A = new Path()
+      .move(points.bustpoint)
+      .line(points.FBA_cut_A_end)
+      .attr('class', 'sa')
+      .hide()
+
+    if (paths.sideSeam.intersects(paths.FBA_cut_A).length == 0) {
+      points.sideSeamIntercept = paths.sideSeam.shiftFractionAlong(options.bustDartHeight)
+    } else {
+      points.sideSeamIntercept = paths.sideSeam.intersects(paths.FBA_cut_A)[0]
+    }
+    points.FBA_cut_B_end = points.bustpoint.shift(
+      -90,
+      (measurements.hpsToWaistFront + measurements.waistToHips - measurements.hpsToBust) * 1.1
+    )
+    paths.FBA_cut_B = new Path()
+      .move(points.bustpoint)
+      .line(points.FBA_cut_B_end)
+      .attr('class', 'sa')
+      .hide()
+    points.bottomHemIntercept = paths.FBA_cut_B.intersectsY(points.hem.y)[0]
+
+    points.FBA_cut_C_end = points.bustpoint.shift(options.armCutAngle, measurements.hpsToBust)
+    paths.FBA_cut_C = new Path()
+      .move(points.bustpoint)
+      .line(points.FBA_cut_C_end)
+      .attr('class', 'sa')
+      .hide()
+
+    points.armholeIntercept = paths.FBA_cut_C.intersects(paths.seam)[0]
+    points.bustPointRotated = new Point(points.bustpoint.x, points.bustpoint.y)
+
+    let rotated = [
+      'bottomHemIntercept',
+      'hem',
+      'sideSeamIntercept',
+      'FBA_cut_A_end',
+      'armhole',
+      'armholeCp2',
+      '_tmp1',
+      '_tmp2',
+      '_tmp3',
+      'armholeHollowCp1',
+      'armholeHollow',
+      'bustPointRotated',
+    ]
+
+    let bustDifferential = measurements.bust - measurements.highBust
+    let anglemoved = 0
+    while (points.bustpoint.dx(points.bustPointRotated) < bustDifferential) {
+      //log.info("dx: " + points.bustpoint.dx(points.bustPointRotated) )
+      for (let p of rotated) {
+        points[p] = points[p].rotate(1, points.armholeIntercept)
+      }
+      anglemoved += 1
+    }
+    log.info('Angle moved: ' + anglemoved)
+
+    points.hem = points.hem.rotate(-anglemoved, points.bustPointRotated)
+    points.sideSeamIntercept = points.sideSeamIntercept.rotate(-anglemoved, points.bustPointRotated)
+
+    paths.sideSeam = new Path()
+      .move(points.hem)
+      .line(points.sideSeamIntercept)
+      .line(points.armhole)
+      .hide()
+
+    let verticaldifferential = points.hem.y - points.cfHem.y
+    let hemlower = ['outerPlacketBottom', 'centerPlacketBottom', 'cfHem', 'innerPlacketBottom']
+
+    for (let p of hemlower) {
+      points[p] = new Point(points[p].x, points.hem.y)
+    }
+
+    points.dartTopEdge = points.sideSeamIntercept.shift(sideseamangle, verticaldifferential)
+    points.dartBottomEdge = points.sideSeamIntercept.shift(
+      sideseamangle - 180,
+      verticaldifferential
+    )
+    points.dartPoint = points.bustpoint.shiftFractionTowards(
+      points.sideSeamIntercept,
+      options.bustDartOffset
+    )
+    paths.bustDart = new Path()
+      .move(points.dartTopEdge)
+      .line(points.dartPoint)
+      .line(points.dartBottomEdge)
   } else {
     paths.sideSeam = new Path().move(points.hem).line(points.armhole).hide()
   }
 
+  //Apply full belly adjustment if it's needed
+  if (options.useBellyAdjustment) {
+    log.info('Full belly adjustment is enabled')
+
+    let waistTarget = (measurements.waist * (1 + options.waistEase) - 2 * waistOriginal) / 2
+    let waistY = measurements.hpsToWaistBack
+
+    if (points.sideSeamIntercept) points.rotatePoint = points.sideSeamIntercept
+    else points.rotatePoint = points.armhole
+
+    points.waistIntersect = paths.sideSeam.intersectsY(waistY)[0]
+
+    log.info(
+      'Waist front target is ' +
+        waistTarget +
+        ', waist front current is ' +
+        points.waistIntersect.x +
+        '. starting rotation'
+    )
+
+    let totalAngle = 0
+    paths.sideTarget = new Path().move(points.hem).line(points.rotatePoint).hide()
+
+    points.bellyEdge = points.cfHem.shiftFractionTowards(points.hem, options.bellyAdjustmentX)
+
+    while (waistTarget > points.waistIntersect.x && totalAngle < 30) {
+      points.hem = points.hem.rotate(1, points.rotatePoint)
+      points.bellyEdge = points.bellyEdge.rotate(1, points.rotatePoint)
+
+      totalAngle++
+
+      paths.sideTarget = new Path().move(points.hem).line(points.rotatePoint).hide()
+
+      points.waistIntersect = paths.sideTarget.intersectsY(waistY)[0]
+    }
+    log.info(
+      'Waist front target is ' +
+        waistTarget +
+        ', waist front current is ' +
+        points.waistIntersect.x +
+        ', angle ' +
+        totalAngle
+    )
+    points.outerPlacketBottom.y = points.bellyEdge.y
+    points.cfHem.y = points.bellyEdge.y
+
+    if (!options.bustDart) {
+      paths.sideSeam = new Path().move(points.hem).line(points.armhole).hide()
+    } else {
+      paths.sideSeam = new Path()
+        .move(points.hem)
+        .line(points.rotatePoint)
+        .line(points.armhole)
+        .hide()
+    }
+  }
+
+  //Draw the buttons
+  paths.centerLine = new Path().move(points.cfNeck).line(points.cfHem).attr('class', 'sa').hide()
+  let j = options.closureCount
+  j--
+  let closurePoints = []
+
+  points.topButton = points.cfNeck.shiftTowards(points.cfHem, placketwidth / 2)
+  snippets['top_button'] = new Snippet('button', points.topButton)
+  for (let i = 1; i < j; i++) {
+    closurePoints.push(points.topButton.shiftFractionTowards(points.cfHem, i / j))
+  }
+  for (let b in closurePoints) {
+    snippets[b + '_button'] = new Snippet('button', closurePoints[b])
+  }
+
   //Redefine base seam and seam allowance to respect placket
-  paths.saBase = new Path()
-    .move(points.outerPlacketBottom)
+  paths.saBase = new Path().move(points.outerPlacketBottom)
+  if (options.useBellyAdjustment) {
+    paths.saBase = paths.saBase.line(points.bellyEdge)
+  }
+  paths.saBase = paths.saBase
     .line(points.hem)
     .join(paths.sideSeam)
     .curve(points.armholeCp2, points.armholeHollowCp1, points.armholeHollow)
@@ -234,7 +407,6 @@ function draftfront({
   paths.seam = paths.saBase
 
   //Draw the pocket
-
   if (options.frontWeltPockets) {
     points.pocketBottom = points.cfHem.shiftFractionTowards(points.hem, options.pocketBottomX)
     points.pocketBottom.y = points.pocketBottom.shiftFractionTowards(
@@ -275,6 +447,8 @@ function draftfront({
 
     log.info('Pocket angle is ' + pocketangle)
   }
+
+  store.set('frontWaistLength', points.cfHem.dist(points.hem))
 
   macro('rmtitle')
   store.cutlist.addCut({ cut: false })
@@ -375,22 +549,26 @@ export const front = {
     'hpsToWaistFront',
     'bustSpan',
     'hpsToBust',
+    'waist',
   ],
   hide: hidePresets.HIDE_TREE,
   options: {
     hipsEase: { pct: 5, min: -10, max: 50, menu: 'fit' },
     chestEase: { pct: 10, min: -10, max: 50, menu: 'fit' },
-    collarEase: { pct: 2, min: -10, max: 50, menu: 'fit' },
+
     placketwidth: { pct: 3, min: 0, max: 10, menu: 'style.placket' },
     neckShiftForward: { pct: 8.8, min: 0, max: 40, menu: 'style' },
-    ribbing: { bool: true, menu: 'construction' },
-    bustDart: { bool: false, menu: 'fit.bust' },
+    collarEase: { pct: 2, min: -10, max: 50, menu: 'fit' },
+
+    bustDart: { dflt: 'None', list: ['None', 'Rotation', 'Original'], menu: 'fit.bust' },
     bustDartOffset: { pct: 25, min: 5, max: 90, menu: 'fit.bust' },
     bustDartHeight: { pct: 20, min: 5, max: 95, menu: 'fit.bust' },
+    armCutAngle: { deg: 45, min: 0, max: 90, menu: 'fit.bust' },
+
+    ribbing: { bool: true, menu: 'construction' },
     ribbingHeight: { pct: 10, min: 5, max: 15, menu: 'style' },
 
     frontWeltPockets: { bool: true, menu: 'style.pocket' },
-
     pocketBottomX: { pct: 70, min: 40, max: 95, menu: 'style.pocket' },
     pocketTopX: { pct: 60, min: 40, max: 95, menu: 'style.pocket' },
     pocketBottomY: { pct: 7, min: 0, max: 50, menu: 'style.pocket' },
@@ -399,7 +577,10 @@ export const front = {
     pocketWeltWidth: { pct: 7, min: 0, max: 20, menu: 'style.pocket' },
 
     closureCount: { count: 7, min: 3, max: 12, menu: 'style.placket' },
-    bustRotations: { bool: false, menu: 'fit.bust' },
+
+    waistEase: { pct: 10, min: 0, max: 50, menu: 'fit.belly' },
+    bellyAdjustmentX: { pct: 40, min: 5, max: 95, menu: 'fit.belly' },
+    useBellyAdjustment: { bool: false, menu: 'fit.belly' },
   },
   draft: draftfront,
 }

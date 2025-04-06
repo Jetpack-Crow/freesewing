@@ -12,6 +12,10 @@ This pattern is hard to fit around the arms in the same ways Simon is hard to fi
 Decide whether to make your button placket out of the outer shell or the lining. The button placket will involve 3 layers of the placket fabric folded over - if that'll be unwieldy with your outer shell fabric, use the lining for it instead.
 For whichever material you're **not** using for the button placket, take the fronts and trim them to the green line with no seam allowance. This'll let their raw edges sit snug inside the button placket.
 
+## Style and sanity checks
+By default, this pattern ends at the hip. The pieces it drafts are a bit shorter than that, because the waistband adds some length. If your body flares out at the hips, a more stretched waistband might cause the bottom hem to migrate up toward your waist. If you would rather it came down closer to your seat, changing the length bonus to 10% is a good place to start.
+Take a jacket you have that you consider to fit you well and make sure the armhole depth is close to the armhole depth Jett is generating. 
+
 # Sewing Instructions
 
 ## Sew the pockets

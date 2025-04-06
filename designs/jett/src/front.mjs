@@ -93,23 +93,6 @@ function draftfront({
   points.outerPlacketTop = points.cfNeck.shift(180, placketwidth * 1.5)
   points.outerPlacketBottom = points.cfHem.shift(180, placketwidth * 1.5)
 
-  //Draw vertical guidelines for placket
-  paths.innerPlacketLine = new Path()
-    .move(points.innerPlacketTop)
-    .line(points.innerPlacketBottom)
-    .attr('class', 'sa')
-
-  paths.centerPlacketLine = new Path()
-    .move(points.centerPlacketTop)
-    .line(points.centerPlacketBottom)
-    .attr('class', 'sa')
-    .setClass('lining')
-  //.hide()
-  paths.edgePlacketLine = new Path()
-    .move(points.outerPlacketTop)
-    .line(points.outerPlacketBottom)
-    .attr('class', 'sa')
-
   //Save the current side seam width and waist width?
 
   paths.sideSeam = new Path().move(points.armhole).line(points.hem).hide()
@@ -366,6 +349,23 @@ function draftfront({
     }
   }
 
+  //Draw vertical guidelines for placket
+  paths.innerPlacketLine = new Path()
+    .move(points.innerPlacketTop)
+    .line(points.innerPlacketBottom)
+    .attr('class', 'sa')
+
+  paths.centerPlacketLine = new Path()
+    .move(points.centerPlacketTop)
+    .line(points.centerPlacketBottom)
+    .attr('class', 'sa')
+    .setClass('lining')
+  //.hide()
+  paths.edgePlacketLine = new Path()
+    .move(points.outerPlacketTop)
+    .line(points.outerPlacketBottom)
+    .attr('class', 'sa')
+
   //Draw the buttons
   paths.centerLine = new Path().move(points.cfNeck).line(points.cfHem).attr('class', 'sa').hide()
   let j = options.closureCount
@@ -390,7 +390,18 @@ function draftfront({
     .line(points.hem)
     .join(paths.sideSeam)
     .curve(points.armholeCp2, points.armholeHollowCp1, points.armholeHollow)
-    .curve(points.armholeHollowCp2, points.armholePitchCp1, points.armholePitch)
+
+  if (options.bustDart == 'Rotation') {
+    paths.saBase = paths.saBase.line(points.armholeIntercept)
+  } else {
+    paths.saBase = paths.saBase.curve(
+      points.armholeHollowCp2,
+      points.armholePitchCp1,
+      points.armholePitch
+    )
+  }
+  paths.saBase = paths.saBase
+    //.curve(points.armholeHollowCp2, points.armholePitchCp1, points.armholePitch)
     .join(paths.frontArmhole)
     .line(points.s3CollarSplit)
     .join(paths.frontCollar)
@@ -491,6 +502,18 @@ function draftfront({
     to: points.cfNeck,
     y: points.cfNeck.y - sa - 15,
   })
+  macro('hd', {
+    id: 'wGreen',
+    from: points.outerPlacketTop,
+    to: points.centerPlacketTop,
+    y: points.cfNeck.y + 15,
+  })
+  macro('hd', {
+    id: 'wGreenBottom',
+    from: points.outerPlacketTop,
+    to: points.centerPlacketTop,
+    y: points.cfHem.y - 15,
+  })
   macro('vd', {
     id: 'hNeck',
     from: points.cfNeck,
@@ -505,13 +528,13 @@ function draftfront({
   })
   macro('vd', {
     id: 'hHemToWaist',
-    from: points.cfHem,
-    to: points.cfWaist,
+    from: points.hem,
+    to: points.waist,
     x: points.armhole.x + sa + 15,
   })
   macro('vd', {
     id: 'hWaistToChest',
-    from: points.cfWaist,
+    from: points.waist,
     to: points.armhole,
     x: points.armhole.x + sa + 15,
   })
@@ -534,6 +557,43 @@ function draftfront({
     x: points.armhole.x + sa + 15,
   })
 
+  if (options.frontWeltPockets) {
+    macro('ld', {
+      id: 'pocketLength',
+      from: points.pocketTopOuter,
+      to: points.pocketBottomOuter,
+    })
+    macro('ld', {
+      id: 'pocketWidth',
+      to: points.pocketTopOuter,
+      from: points.pocketTopInner,
+    })
+    macro('vd', {
+      id: 'pocketBottomHeight',
+      to: points.cfHem,
+      from: points.pocketBottom,
+      x: points.pocketBottom.x,
+    })
+    macro('hd', {
+      id: 'pocketBottomX',
+      from: points.centerPlacketBottom,
+      to: points.pocketBottom,
+      y: points.pocketBottom.y,
+    })
+    macro('vd', {
+      id: 'pocketTopHeight',
+      to: points.cfHem,
+      from: points.pocketTop,
+      x: points.pocketTop.x - 15,
+    })
+    macro('hd', {
+      id: 'pocketTopX',
+      from: points.centerPlacketBottom,
+      to: points.pocketTop,
+      y: points.pocketTop.y,
+    })
+  }
+
   return part
 }
 
@@ -553,8 +613,8 @@ export const front = {
   ],
   hide: hidePresets.HIDE_TREE,
   options: {
-    hipsEase: { pct: 5, min: -10, max: 50, menu: 'fit' },
-    chestEase: { pct: 10, min: -10, max: 50, menu: 'fit' },
+    hipsEase: { pct: 8, min: -10, max: 50, menu: 'fit' },
+    chestEase: { pct: 15, min: -10, max: 50, menu: 'fit' },
 
     placketwidth: { pct: 3, min: 0, max: 10, menu: 'style.placket' },
     neckShiftForward: { pct: 0, min: 0, max: 40, menu: 'style' },

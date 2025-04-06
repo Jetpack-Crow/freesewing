@@ -15,19 +15,19 @@ function draftJettPocketWelt({
   store,
   log,
 }) {
+  if (!options.frontWeltPocket) {
+    part.hide()
+    return part
+  }
   log.info('Pocket length is ' + store.get('pocketLength'))
 
-  let rh = store.get('pocketLength')
-
-  //When the store works and the full belly adjustment is in place,
-  // define this as a percentage of the total hip circumference
-  //for now, it's just relative to hip
+  let length = store.get('pocketLength')
   let width = store.get('pocketWidth') * 2
 
   points.topLeft = new Point(0, 0)
   points.topRight = new Point(width, 0)
-  points.bottomRight = new Point(width, rh)
-  points.bottomLeft = new Point(0, rh)
+  points.bottomRight = new Point(width, length)
+  points.bottomLeft = new Point(0, length)
 
   paths.seam = new Path()
     .move(points.topLeft)
@@ -71,8 +71,6 @@ function draftJettPocketWelt({
 export const pocket_welt = {
   name: 'Jett.pocket_welt',
   after: front,
-  options: {
-    ribbingEndsPercentage: { pct: 5, min: 0, max: 20, menu: 'construction' },
-  },
+  options: {},
   draft: draftJettPocketWelt,
 }

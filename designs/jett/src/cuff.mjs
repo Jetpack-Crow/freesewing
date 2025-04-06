@@ -30,7 +30,7 @@ function draftJettCuff({ points, measurements, options, macro, store, part }) {
 export const cuff = {
   name: 'Jett.cuff',
   options: {
-    ribbingStretch: { pct: 15, min: 0, max: 30, menu: 'fit' },
+    ribbingStretch: { pct: 15, min: 0, max: 30, menu: 'construction' },
   },
   draft: draftJettCuff,
 }

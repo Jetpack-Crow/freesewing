@@ -391,7 +391,7 @@ function draftfront({
     .join(paths.sideSeam)
     .curve(points.armholeCp2, points.armholeHollowCp1, points.armholeHollow)
 
-  if (options.bustDart == 'Rotation') {
+  if (options.bustDart == 'Rotation' && options.draftForHighBust) {
     paths.saBase = paths.saBase.line(points.armholeIntercept)
   } else {
     paths.saBase = paths.saBase.curve(

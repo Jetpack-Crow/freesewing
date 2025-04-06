@@ -134,6 +134,61 @@ function draftBack({
       x: points.cbHips.x - 30,
     })
   } else {
+    macro('vd', {
+      id: 'hTotal',
+      from: points.s3CollarSplit,
+      to: points.hem,
+      x: points.cbHem.x - 30,
+    })
+    macro('vd', {
+      id: 'hHemToNeckOpeningBottom',
+      from: points.cbNeck,
+      to: points.hem,
+      x: points.cbHem.x - 15,
+    })
+    macro('vd', {
+      id: 'hHemToWaist',
+      from: points.cbHem,
+      to: points.cbWaist,
+      x: points.cbHem.x + 30,
+    })
+    macro('vd', {
+      id: 'hHemToArmhole',
+      from: points.hem,
+      to: points.armhole,
+      x: points.armhole.x + 15,
+    })
+    macro('vd', {
+      id: 'hHemToArmholePitch',
+      from: points.hem,
+      to: points.armholePitch,
+      x: points.armhole.x + 30,
+    })
+    macro('vd', {
+      id: 'hHemToShoulder',
+      from: points.hem,
+      to: points.s3ArmholeSplit,
+      x: points.armhole.x + 45,
+    })
+    macro('hd', {
+      id: 'wHem',
+      from: points.cbHem,
+      to: points.hem,
+      y: points.hem.y + sa + 15,
+    })
+    macro('hd', {
+      id: 'wArmhole',
+      from: points.cbHem,
+      to: points.armhole,
+      y: points.armhole.y,
+    })
+    macro('hd', {
+      id: 'wArmholeHollow',
+      from: points.cbHem,
+      to: points.backArmholePitch,
+      y: points.backArmholePitch.y,
+    })
+
     //just copying the same code from brian. i'm not sure why just returning it
     //without the other changes doesn't work
     paths.saBase = new Path()

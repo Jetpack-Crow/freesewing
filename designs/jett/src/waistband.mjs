@@ -1,4 +1,6 @@
-import { front } from '@freesewing/brian'
+import { front } from './front.mjs'
+import { cuff } from './cuff.mjs'
+
 import { draftRibbing } from './shared.mjs'
 
 //This code is taken from Huey with only the change for the ribbing ends, but it'll be using slightly
@@ -33,8 +35,8 @@ function draftJettWaistband({ points, measurements, options, macro, store, part 
 export const waistband = {
   name: 'Jett.waistband',
   after: front,
+  cuff,
   options: {
-    ribbingStretch: { pct: 15, min: 0, max: 30, menu: 'fit' },
     ribbingEndsPercentage: { pct: 5, min: 0, max: 20, menu: 'construction' },
   },
   draft: draftJettWaistband,

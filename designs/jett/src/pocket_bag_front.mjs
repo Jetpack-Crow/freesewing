@@ -100,6 +100,55 @@ function draft_pocket_bag_front({
   points.title = points.bagBottomLeft.shiftFractionTowards(points.bagTopCorner, 0.4)
   macro('title', { at: points.title, nr: 9, title: 'pocket_bag_front' })
 
+  macro('vd', {
+    id: 'hTotal',
+    from: points.bagTopLeft,
+    to: points.bagBottomLeft,
+    x: points.bagTopLeft.x - 15,
+  })
+  macro('hd', {
+    id: 'wBottom',
+    from: points.bagBottomLeft,
+    to: points.bagBottomRight,
+    y: points.bagBottomLeft.y + sa + 15,
+  })
+
+  macro('hd', {
+    id: 'wTop',
+    from: points.bagTopLeft,
+    to: points.bagTopCorner,
+    y: points.bagTopLeft.y - sa - 15,
+  })
+  macro('vd', {
+    id: 'hLower',
+    from: points.bagBottomCorner,
+    to: points.bagBottomRight,
+    x: points.bagBottomRight.x + sa + 15,
+  })
+  macro('hd', {
+    id: 'placketMark',
+    from: points.bagTopLeft,
+    to: points.placketMarkTop,
+    y: points.bagTopLeft.y + 15,
+  })
+
+  macro('ld', {
+    id: 'pocketDiagonal',
+    to: points.bagTopCorner,
+    from: points.pocketTopOuter,
+  })
+
+  macro('ld', {
+    id: 'pocketLength',
+    to: points.pocketBottomOuter,
+    from: points.pocketTopOuter,
+  })
+  macro('ld', {
+    id: 'pocketWidth',
+    from: points.pocketTopInner,
+    to: points.pocketTopOuter,
+  })
+
   return part
 }
 

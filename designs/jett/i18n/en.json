@@ -41,7 +41,11 @@
     },
     "bustDartHeight": {
       "t": "Bust dart height",
-      "d": "Where to place the bust dart on the side seam"
+      "d": "Where to place the bust dart on the side seam. Only used if the code can't automatically find an intersection on the side seam"
+    },
+    "bustDartPercentage": {
+      "t": "FBA adjustment percentage",
+      "d": "How much of the effect of the FBA to use."
     },
     "bustDartOffset": {
       "t": "Bust dart offset",

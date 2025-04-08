@@ -26,7 +26,7 @@ function draftfront({
 
   // Shorten body to take ribbing into account
   if (options.ribbing) {
-    let rh = options.ribbingHeight * (measurements.hpsToWaistBack + measurements.waistToHips)
+    const rh = options.ribbingHeight * (measurements.hpsToWaistBack + measurements.waistToHips)
     for (let p of ['hem', 'cfHem']) points[p] = points[p].shift(90, rh)
     store.set('ribbingHeight', rh)
   } else store.set('ribbingHeight', 0)
@@ -223,7 +223,12 @@ function draftfront({
       .hide()
     points.bottomHemIntercept = paths.FBA_cut_B.intersectsY(points.hem.y)[0]
 
-    points.FBA_cut_C_end = points.bustpoint.shift(options.armCutAngle, measurements.hpsToBust)
+    const armCutAngle =
+      points.bustpoint.angle(
+        points.armholeHollow.shiftFractionTowards(points.frontArmholePitch, 0.5)
+      ) * options.armCutAngle
+
+    points.FBA_cut_C_end = points.bustpoint.shift(armCutAngle, measurements.hpsToBust)
     paths.FBA_cut_C = new Path()
       .move(points.bustpoint)
       .line(points.FBA_cut_C_end)
@@ -248,7 +253,7 @@ function draftfront({
       'bustPointRotated',
     ]
 
-    let bustDifferential = measurements.bust - measurements.highBust
+    let bustDifferential = (measurements.bust - measurements.highBust) * options.bustDartPercentage
     let anglemoved = 0
     while (points.bustpoint.dx(points.bustPointRotated) < bustDifferential) {
       //log.info("dx: " + points.bustpoint.dx(points.bustPointRotated) )
@@ -620,10 +625,12 @@ export const front = {
     neckShiftForward: { pct: 0, min: 0, max: 40, menu: 'style' },
     collarEase: { pct: 2, min: -10, max: 50, menu: 'fit' },
 
+    draftForHighBust: { bool: false, menu: 'fit.bust' },
     bustDart: { dflt: 'None', list: ['None', 'Rotation', 'Original'], menu: 'fit.bust' },
     bustDartOffset: { pct: 25, min: 5, max: 90, menu: 'fit.bust' },
-    bustDartHeight: { pct: 20, min: 5, max: 95, menu: 'fit.bust' },
-    armCutAngle: { deg: 45, min: 0, max: 90, menu: 'fit.bust' },
+    bustDartHeight: { pct: 20, min: 5, max: 95, menu: 'fit.bust.advanced' },
+    bustDartPercentage: { pct: 60, min: 0, max: 100, menu: 'fit.bust.advanced' },
+    armCutAngle: { pct: 100, min: 75, max: 125, menu: 'fit.bust.advanced' },
 
     ribbing: { bool: true, menu: 'construction' },
     ribbingHeight: { pct: 10, min: 5, max: 15, menu: 'style' },

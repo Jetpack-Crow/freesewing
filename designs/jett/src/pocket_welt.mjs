@@ -15,7 +15,7 @@ function draftJettPocketWelt({
   store,
   log,
 }) {
-  if (!options.frontWeltPocket) {
+  if (!options.frontWeltPockets) {
     part.hide()
     return part
   }

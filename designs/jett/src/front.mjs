@@ -253,7 +253,9 @@ function draftfront({
       'bustPointRotated',
     ]
 
-    let bustDifferential = (measurements.bust - measurements.highBust) * options.bustDartPercentage
+    let bustDifferential =
+      measurements.bust * (1 + options.fullBustEase) -
+      measurements.highBust * (1 + options.chestEase)
     let anglemoved = 0
     while (points.bustpoint.dx(points.bustPointRotated) < bustDifferential) {
       //log.info("dx: " + points.bustpoint.dx(points.bustPointRotated) )
@@ -629,7 +631,7 @@ export const front = {
     bustDart: { dflt: 'None', list: ['None', 'Rotation', 'Original'], menu: 'fit.bust' },
     bustDartOffset: { pct: 25, min: 5, max: 90, menu: 'fit.bust' },
     bustDartHeight: { pct: 20, min: 5, max: 95, menu: 'fit.bust.advanced' },
-    bustDartPercentage: { pct: 60, min: 0, max: 100, menu: 'fit.bust.advanced' },
+    fullBustEase: { pct: 10, min: 0, max: 50, menu: 'fit.bust' },
     armCutAngle: { pct: 100, min: 75, max: 125, menu: 'fit.bust.advanced' },
 
     ribbing: { bool: true, menu: 'construction' },

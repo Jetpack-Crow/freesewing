@@ -1,7 +1,18 @@
 {
-  "t": "Genie",
-  "d": "A FreeSewing pattern that needs a description",
-  "p": { },
+  "t": "Jett jacket",
+  "d": "A FreeSewing pattern for a casual jacket",
+  "p": { 
+    "back": "Back",
+    "front": "Front",
+    "base": "Base",
+    "sleevecap": "Sleevecap",
+    "sleeve": "Sleeve",
+    "collar_ribbing": "Collar ribbing",
+    "cuff": "Cuff",
+    "pocket_bag_front": "Front pocket bag",
+    "waistband": "Waistband"
+  
+  },
   "s": { },
   "o": { }
 }

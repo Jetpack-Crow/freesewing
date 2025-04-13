@@ -50,6 +50,20 @@ function draftJettWaistbandEnds({
     title: 'waistband_ends',
   })
 
+  macro('hd', {
+    id: 'wTotal',
+    from: points.topLeft,
+    to: points.topRight,
+    y: points.bottomLeft.y + sa + 15,
+  })
+
+  macro('vd', {
+    id: 'hTotal',
+    from: points.topLeft,
+    to: points.bottomLeft,
+    x: points.bottomLeft.x - sa - 15,
+  })
+
   return part
 }
 

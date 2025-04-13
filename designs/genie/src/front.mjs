@@ -97,38 +97,52 @@ function draftfront({
       points.armhole = points.armhole.shift(0, bustDifferential / 2)
       points.hem = points.hem.shift(0, bustDifferential / 2)
 
-      //shift lower points down by waist differential/2 and armhole up by waist differential/2
-      points.hem = points.hem.shift(-90, waistDifferential / 2)
-      points.outerPlacketBottom = points.outerPlacketBottom.shift(-90, waistDifferential / 2)
-      points.armhole = points.armhole.shift(90, waistDifferential / 2)
+      //shift lower points down by waist differential
+      points.hem = points.hem.shift(-90, waistDifferential)
+      points.outerPlacketBottom = points.outerPlacketBottom.shift(-90, waistDifferential)
 
       //Define the point on the side seam that the dart should be centered on
       paths.sideSeam = new Path().move(points.armhole).line(points.hem).hide()
 
-      let dartPointShift = points.bustpoint.y - points.armhole.y
+      points.sideSeamIntercept = paths.sideSeam.shiftFractionAlong(options.bustDartHeight)
 
-      points.sideSeamIntercept = paths.sideSeam.shiftAlong(dartPointShift)
-
-      points.dartTopEdge = paths.sideSeam.shiftAlong(dartPointShift - waistDifferential / 2)
-      points.dartBottomEdge = paths.sideSeam.shiftAlong(dartPointShift + waistDifferential / 2)
+      let sideseamangle = points.hem.angle(points.armhole)
+      points.dartTopEdge = points.sideSeamIntercept.shift(sideseamangle, waistDifferential / 2)
+      points.dartBottomEdge = points.sideSeamIntercept.shift(
+        sideseamangle - 180,
+        waistDifferential / 2
+      )
 
       points.dartPoint = points.bustpoint.shiftFractionTowards(
         points.sideSeamIntercept,
         options.bustDartOffset
       )
 
+      points.armhole = points.armhole.shift(180, bustDifferential / 2)
+
       paths.bustDart = new Path()
         .move(points.dartTopEdge)
         .line(points.dartPoint)
         .line(points.dartBottomEdge)
+
+      paths.sideSeam = new Path()
+        .move(points.hem)
+        .line(points.dartBottomEdge)
+        .line(points.dartTopEdge)
+        .line(points.armhole)
+        .hide()
+    } else {
+      paths.sideSeam = new Path().move(points.hem).line(points.armhole)
     }
+  } else {
+    paths.sideSeam = new Path().move(points.hem).line(points.armhole).hide()
   }
 
   //Redefine base seam and seam allowance to respect placket
   paths.saBase = new Path()
     .move(points.outerPlacketBottom)
     .line(points.hem)
-    .line(points.armhole)
+    .join(paths.sideSeam)
     .curve(points.armholeCp2, points.armholeHollowCp1, points.armholeHollow)
     .curve(points.armholeHollowCp2, points.armholePitchCp1, points.armholePitch)
     .join(paths.frontArmhole)
@@ -282,13 +296,14 @@ export const front = {
   ],
   hide: hidePresets.HIDE_TREE,
   options: {
-    hipsEase: { pct: 10, min: -10, max: 50, menu: 'fit' },
-    chestEase: { pct: 15, min: -10, max: 50, menu: 'fit' },
+    hipsEase: { pct: 5, min: -10, max: 50, menu: 'fit' },
+    chestEase: { pct: 10, min: -10, max: 50, menu: 'fit' },
     collarEase: { pct: 2, min: -10, max: 50, menu: 'fit' },
     placketwidth: { pct: 3, min: 0, max: 10, menu: 'style' },
     ribbing: { bool: true, menu: 'construction' },
     bustDart: { bool: false, menu: 'fit.bust' },
-    bustDartOffset: { pct: 25, min: 5, max: 60, menu: 'fit.bust' },
+    bustDartOffset: { pct: 25, min: 5, max: 90, menu: 'fit.bust' },
+    bustDartHeight: { pct: 20, min: 5, max: 95, menu: 'fit.bust' },
     ribbingHeight: { pct: 10, min: 5, max: 15, menu: 'style' },
 
     frontWeltPockets: { bool: true, menu: 'style.pocket' },

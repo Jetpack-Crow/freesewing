@@ -37,6 +37,39 @@ function draftsleeve({
 
     if (sa) paths.sa = paths.seam.offset(sa).attr('class', 'fabric sa')
   }
+
+  //remove broken paperless macros
+  macro('rmHd', 'wCuff')
+  macro('rmVd', 'hCuffToArmhole')
+  macro('rmVd', 'hFull')
+
+  //make new paperless markings
+  macro('vd', {
+    id: 'hTotal',
+    from: points.sleeveTop,
+    to: points.centerWrist,
+    x: points.bicepsLeft.x - sa - 30,
+  })
+  macro('vd', {
+    id: 'hSleeve',
+    from: points.bicepsLeft,
+    to: points.centerWrist,
+    x: points.bicepsLeft.x - sa - 15,
+  })
+  macro('vd', {
+    id: 'hSleeveCap',
+    from: points.sleeveTop,
+    to: points.bicepsLeft,
+    x: points.bicepsLeft.x - sa - 15,
+  })
+
+  macro('hd', {
+    id: 'wWrist',
+    from: points.wristLeft,
+    to: points.wristRight,
+    y: points.centerWrist.y + sa + 15,
+  })
+
   return part
 }
 

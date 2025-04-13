@@ -68,7 +68,7 @@ function draftYoke({
     grainline: true,
   })
 
-  store.cutlist.addCut({ cut: 1, from: 'fabric' })
+  store.cutlist.addCut({ cut: 1, from: 'fabric', onFold: true })
 
   //Remove unneeded paperless macros
   macro('rmHd', 'lShoulder')

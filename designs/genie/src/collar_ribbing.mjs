@@ -43,7 +43,7 @@ export const collar_ribbing = {
   name: 'Jett.collar_ribbing',
   measurements: ['neck'],
   options: {
-    neckEase: { pct: 5, min: -10, max: 50, menu: 'fit' },
+    collarEase: { pct: 2, min: -10, max: 50, menu: 'fit' },
     ribbedCollarWidth: { pct: 10, min: 2, max: 40, menu: 'style.collar' },
     ribbedCollarCurve: { pct: 40, min: 0, max: 50, menu: 'style.collar' },
   },

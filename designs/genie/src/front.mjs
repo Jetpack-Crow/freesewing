@@ -59,6 +59,19 @@ function draftfront({
 
   paths.centerLine = new Path().move(points.cfNeck).line(points.cfHem).attr('class', 'sa')
 
+  //apply the full bust adjustment
+  if (options.bustDart) {
+    points.bustpoint = new Point(measurements.bustSpan / 2, measurements.hpsToBust)
+
+    //Shift outer points by bust differential / 2
+    log.info('chest is ' + measurements.chest)
+    log.info('high bust is ' + measurements.highBust)
+    let bustDifferential = measurements.chest - measurements.highBust
+    log.info('Bust differential is ' + bustDifferential)
+
+    points.armhole = points.armhole.shift(0, bustDifferential / 2)
+  }
+
   //Redefine base seam and seam allowance to respect placket
   paths.saBase = new Path()
     .move(points.outerPlacketBottom)
@@ -121,12 +134,24 @@ function draftfront({
 export const front = {
   name: 'genie.front',
   from: brianFront,
-  measurements: ['hips', 'waistToHips', 'hpsToWaistBack'],
+  measurements: [
+    'chest',
+    'highBust',
+    'hips',
+    'waistToHips',
+    'hpsToWaistBack',
+    'hpsToWaistFront',
+    'bustSpan',
+    'hpsToBust',
+  ],
   hide: hidePresets.HIDE_TREE,
   options: {
     hipsEase: { pct: 10, min: -10, max: 50, menu: 'fit' },
+    chestEase: { pct: 15, min: -10, max: 50, menu: 'fit' },
+    collarEase: { pct: 2, min: -10, max: 50, menu: 'fit' },
     placketwidth: { pct: 3, min: 0, max: 10, menu: 'style' },
     ribbing: { bool: true, menu: 'construction' },
+    bustDart: { bool: false, menu: 'style' },
     ribbingHeight: { pct: 10, min: 5, max: 15, menu: 'style' },
 
     frontWeltPockets: { bool: true, menu: 'style.pocket' },

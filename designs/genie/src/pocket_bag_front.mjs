@@ -18,7 +18,8 @@ function draft_pocket_bag_front({
     return part
   }
   let body_width = (measurements.hips * (1 + options.hipsEase)) / 4
-  let body_length = measurements.hpsToWaistBack + measurements.waistToHips
+  let body_length =
+    measurements.hpsToWaistBack + measurements.waistToHips - store.get('ribbingHeight')
 
   points.pocketBottom = new Point(
     body_width * options.pocketBottomX,

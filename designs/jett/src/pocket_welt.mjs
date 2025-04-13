@@ -1,0 +1,78 @@
+import { front } from './front.mjs'
+
+function draftJettPocketWelt({
+  options,
+  Point,
+  Path,
+  points,
+  paths,
+  Snippet,
+  snippets,
+  sa,
+  macro,
+  part,
+  measurements,
+  store,
+  log,
+}) {
+  log.info('Pocket length is ' + store.get('pocketLength'))
+
+  let rh = store.get('pocketLength')
+
+  //When the store works and the full belly adjustment is in place,
+  // define this as a percentage of the total hip circumference
+  //for now, it's just relative to hip
+  let width = store.get('pocketWidth') * 2
+
+  points.topLeft = new Point(0, 0)
+  points.topRight = new Point(width, 0)
+  points.bottomRight = new Point(width, rh)
+  points.bottomLeft = new Point(0, rh)
+
+  paths.seam = new Path()
+    .move(points.topLeft)
+    .line(points.topRight)
+    .line(points.bottomRight)
+    .line(points.bottomLeft)
+    .line(points.topLeft)
+    .reverse()
+
+  if (sa) {
+    paths.sa = paths.seam.offset(sa).attr('class', 'fabric sa')
+    paths.sa.line(paths.sa.start())
+  }
+
+  store.cutlist.setCut({ cut: 2, from: 'fabric' })
+  points.title = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
+
+  macro('title', {
+    at: points.bottomLeft,
+    nr: 10,
+    title: 'pocket_welt',
+  })
+
+  macro('hd', {
+    id: 'wTotal',
+    from: points.topLeft,
+    to: points.topRight,
+    y: points.bottomLeft.y + sa + 15,
+  })
+
+  macro('vd', {
+    id: 'hTotal',
+    from: points.topLeft,
+    to: points.bottomLeft,
+    x: points.bottomLeft.x - sa - 15,
+  })
+
+  return part
+}
+
+export const pocket_welt = {
+  name: 'Jett.pocket_welt',
+  after: front,
+  options: {
+    ribbingEndsPercentage: { pct: 5, min: 0, max: 20, menu: 'construction' },
+  },
+  draft: draftJettPocketWelt,
+}

@@ -10,10 +10,15 @@
     "collar_ribbing": "Collar ribbing",
     "cuff": "Cuff",
     "yoke": "Yoke",
+    "pocket_welt": "Pocket welt",
     "pocket_bag_front": "Front pocket bag",
     "waistband": "Waistband"
   
   },
-  "s": { },
+  "s": {
+      "bustWarning": "Bust is smaller than high bust. The bust dart won't be generated",
+      "waistWarning": "HPS to waist front is smaller than HPS to waist back. The bust dart won't be generated.\nDid you take the HPS to waist front measurement down over the bust?"
+
+   },
   "o": { }
 }

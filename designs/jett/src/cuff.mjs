@@ -13,7 +13,7 @@ function draftJettCuff({ points, measurements, options, macro, store, part }) {
    * Annotations
    */
   // Cutlist
-  store.cutlist.setCut({ cut: 1, from: 'ribbing' })
+  store.cutlist.setCut({ cut: 2, from: 'ribbing', identical: true })
 
   // Title
   macro('rmTitle', 'title_notes')

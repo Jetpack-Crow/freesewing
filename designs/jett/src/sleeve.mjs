@@ -70,6 +70,15 @@ function draftsleeve({
     y: points.centerWrist.y + sa + 15,
   })
 
+  macro('rmtitle')
+  store.cutlist.addCut({ cut: false })
+  store.cutlist.addCut({ cut: false, from: 'lining' })
+  store.cutlist.addCut({ cut: 2, from: 'fabric', identical: false })
+  store.cutlist.addCut({ cut: 2, from: 'lining', identical: false })
+
+  //points.title = points.outerPlacketTop.shiftFractionTowards(points.hem, 0.5)
+  macro('title', { at: points.title, nr: 3, title: 'sleeve' })
+
   return part
 }
 

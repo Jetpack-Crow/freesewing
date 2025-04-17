@@ -1,3 +1,5 @@
+import { coat } from './coat.mjs'
+
 function draftcargopocket({
   options,
   Point,
@@ -9,79 +11,74 @@ function draftcargopocket({
   sa,
   macro,
   part,
+  store,
 }) {
-  if (options.pocket_type == 'cargo') {
-    const chesthorizontal = (options.chest_circum * 584) / 2
-    const vertlength = 380 * options.chest_circum * options.backlength
-
-    let pocket_width = chesthorizontal * options.pocket_width * 0.35
-    let pocket_depth = vertlength * options.pocket_depth
+  if (options.pocketType == 'cargo') {
+    let pocketWidth = store.get('pocketWidth')
+    let pocketDepth = store.get('pocketDepth')
 
     //Swap the orientation if the flap is on the other side
     if (options.cargo_pocket_orientation == 'horizontal') {
-      pocket_width = vertlength * options.pocket_depth * 0.5
-      pocket_depth = chesthorizontal * options.pocket_width * 0.35 * 2
+      pocketWidth = store.get('pocketDepth') * 0.5
+      pocketDepth = store.get('pocketWidth') * 2
     }
 
-    const folds_width = (pocket_width + pocket_depth) * options.cargo_pocket_fold
+    const folds_width = (pocketWidth + pocketDepth) * options.cargo_pocket_fold
 
-    points.inner_top_center = new Point(0, 0)
-    points.inner_bottom_center = points.inner_top_center.shift(270, pocket_depth)
+    points.innerTopCenter = new Point(0, 0)
+    points.innerBottomCenter = points.innerTopCenter.shift(270, pocketDepth)
 
-    points.inner_top_edge_right = points.inner_top_center.shift(0, pocket_width)
-    points.inner_bottom_edge_right = points.inner_bottom_center.shift(0, pocket_width)
+    points.innerTopEdgeRight = points.innerTopCenter.shift(0, pocketWidth)
+    points.innerBottomEdgeRight = points.innerBottomCenter.shift(0, pocketWidth)
 
     //Bottom edge offset
-    points.bottom_edge_center = points.inner_bottom_center.shift(270, folds_width)
-    points.bottom_edge_outer = points.inner_bottom_edge_right.shift(270, folds_width)
+    points.bottomEdgeCenter = points.innerBottomCenter.shift(270, folds_width)
+    points.bottomEdgeOuter = points.innerBottomEdgeRight.shift(270, folds_width)
 
     //Right edge offset
-    points.right_edge_top = points.inner_top_edge_right.shift(0, folds_width)
-    points.right_edge_bottom = points.inner_bottom_edge_right.shift(0, folds_width)
+    points.rightEdgeTop = points.innerTopEdgeRight.shift(0, folds_width)
+    points.rightEdgeBottom = points.innerBottomEdgeRight.shift(0, folds_width)
 
-    paths.cargopocketsquare = new Path()
-      .move(points.inner_top_center)
-      .line(points.inner_top_edge_right)
-      .line(points.inner_bottom_edge_right)
-      .line(points.inner_bottom_center)
-      .attr('class', 'sa')
+    paths.cargoPocketSquare = new Path()
+      .move(points.innerTopCenter)
+      .line(points.innerTopEdgeRight)
+      .line(points.innerBottomEdgeRight)
+      .line(points.innerBottomCenter)
+      .addClass('sa')
 
-    paths.cargopocketjagged = new Path()
-      .move(points.bottom_edge_center)
-      .line(points.bottom_edge_outer)
-      .line(points.inner_bottom_edge_right)
-      .line(points.right_edge_bottom)
-      .line(points.right_edge_top)
+    paths.cargoPocketJagged = new Path()
+      .move(points.bottomEdgeCenter)
+      .line(points.bottomEdgeOuter)
+      .line(points.innerBottomEdgeRight)
+      .line(points.rightEdgeBottom)
+      .line(points.rightEdgeTop)
       .hide()
 
-    paths.cargopockettop = new Path()
-      .move(points.right_edge_top)
-      .line(points.inner_top_center)
-      .hide()
+    paths.cargoPocketTop = new Path().move(points.rightEdgeTop).line(points.innerTopCenter).hide()
 
-    paths.seam = paths.cargopockettop.join(paths.cargopocketjagged).attr('class', 'fabric')
+    paths.seam = paths.cargoPocketTop.join(paths.cargoPocketJagged).addClass('fabric')
 
     if (sa) {
-      paths.sa = paths.cargopocketjagged
+      paths.sa = paths.cargoPocketJagged
         .offset(sa)
-        .join(paths.cargopockettop.offset(sa * 2))
+        .join(paths.cargoPocketTop.offset(sa * 2))
         .close()
         .trim()
-        .attr('class', 'fabric sa')
+        .setClass('fabric sa')
     }
 
     macro('cutonfold', {
-      to: points.bottom_edge_center,
-      from: points.inner_top_center,
+      to: points.bottomEdgeCenter,
+      from: points.innerTopCenter,
       grainline: true,
     })
 
-    let titlescale = options.chest_circum * options.pocket_width
+    const titlescale = options.chestCircum * options.pocketWidth
 
-    points.titleanchor = points.inner_top_center.shiftFractionTowards(points.bottom_edge_outer, 0.7)
+    points.titleAnchor = points.innerTopCenter.shiftFractionTowards(points.bottomEdgeOuter, 0.7)
 
     macro('title', {
-      at: points.titleanchor,
+      at: points.titleAnchor,
       nr: 3,
       title: 'cargopocket',
       scale: titlescale,
@@ -89,34 +86,34 @@ function draftcargopocket({
 
     macro('vd', {
       id: 'vHeight',
-      from: points.inner_top_center,
-      to: points.bottom_edge_center,
-      x: points.inner_top_center.x - sa - 15,
+      from: points.innerTopCenter,
+      to: points.bottomEdgeCenter,
+      x: points.innerTopCenter.x - sa - 15,
     })
     macro('hd', {
       id: 'hWidth',
-      from: points.inner_top_center,
-      to: points.right_edge_top,
-      y: points.inner_top_center.y - sa - 15,
+      from: points.innerTopCenter,
+      to: points.rightEdgeTop,
+      y: points.innerTopCenter.y - sa - 15,
     })
 
     macro('hd', {
       id: 'pleatWidth',
-      from: points.inner_top_edge_right,
-      to: points.right_edge_top,
-      y: points.inner_top_center.y + 15,
+      from: points.innerTopEdgeRight,
+      to: points.rightEdgeTop,
+      y: points.innerTopCenter.y + 15,
     })
     macro('vd', {
       id: 'pleatWidthV',
-      from: points.inner_bottom_center,
-      to: points.bottom_edge_center,
-      x: points.inner_top_center.x + 15,
+      from: points.innerBottomCenter,
+      to: points.bottomEdgeCenter,
+      x: points.innerTopCenter.x + 15,
     })
 
-    snippets.pockettopnotch = new Snippet('notch', points.inner_top_center)
+    snippets.pocketTopNotch = new Snippet('notch', points.innerTopCenter)
 
-    points.button_position = points.inner_top_center.shift(270, pocket_depth * 0.3 * 0.6)
-    snippets.pocketbutton = new Snippet('button', points.button_position)
+    points.buttonPosition = points.innerTopCenter.shift(270, pocketDepth * 0.3 * 0.6)
+    snippets.pocketbutton = new Snippet('button', points.buttonPosition)
   }
 
   return part
@@ -124,26 +121,7 @@ function draftcargopocket({
 
 export const cargopocket = {
   name: 'jasmine.cargopocket',
-  options: {
-    chest_circum: {},
-    backlength: {},
-
-    pocket_type: {
-      dflt: 'none',
-      list: ['none', 'kangaroo', 'cargo'],
-      menu: 'style',
-    },
-
-    pocket_width: {},
-    pocket_depth: {},
-
-    cargo_pocket_fold: { pct: 15, min: 0, max: 50, menu: 'style.pocket.cargo' },
-
-    cargo_pocket_orientation: {
-      dflt: 'vertical',
-      list: ['vertical', 'horizontal'],
-      menu: 'style.pocket.cargo',
-    },
-  },
+  after: coat,
+  options: {},
   draft: draftcargopocket,
 }

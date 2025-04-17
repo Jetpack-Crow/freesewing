@@ -1,3 +1,5 @@
+import { coat } from './coat.mjs'
+
 function draftcargopockettop({
   options,
   Point,
@@ -9,55 +11,53 @@ function draftcargopockettop({
   sa,
   macro,
   part,
+  store,
 }) {
-  if (options.pocket_type == 'cargo') {
-    const chesthorizontal = (options.chest_circum * 584) / 2
-    const vertlength = 380 * options.chest_circum * options.backlength
-
-    let pocket_width = chesthorizontal * options.pocket_width * 0.35
-    let pocket_depth = vertlength * options.pocket_depth
+  if (options.pocketType == 'cargo') {
+    let pocketWidth = store.get('pocketWidth')
+    let pocketDepth = store.get('pocketDepth')
 
     //Swap the orientation if the flap is on the other side
     if (options.cargo_pocket_orientation == 'horizontal') {
-      pocket_width = vertlength * options.pocket_depth * 0.5
-      pocket_depth = chesthorizontal * options.pocket_width * 0.35 * 2
+      pocketWidth = store.get('pocketDepth') * 0.5
+      pocketDepth = store.get('pocketWidth') * 2
     }
 
-    points.top_center = new Point(0, 0)
-    points.top_edge_right = new Point(pocket_width, 0)
-    points.bottom_edge_right = new Point(pocket_width, pocket_depth / 6)
-    points.pocket_center_bottom = new Point(0, pocket_depth / 3)
+    points.topCenter = new Point(0, 0)
+    points.topEdgeRight = new Point(pocketWidth, 0)
+    points.bottomEdgeRight = new Point(pocketWidth, pocketDepth / 6)
+    points.pocketCenterBottom = new Point(0, pocketDepth / 3)
 
-    points.top_edge_left = points.top_edge_right.flipX()
-    points.bottom_edge_left = points.bottom_edge_right.flipX()
+    points.topEdgeLeft = points.topEdgeRight.flipX()
+    points.bottomEdgeLeft = points.bottomEdgeRight.flipX()
 
-    paths.pocket_top = new Path()
-      .move(points.top_center)
-      .line(points.top_edge_right)
-      .line(points.bottom_edge_right)
-      .line(points.pocket_center_bottom)
-      .line(points.bottom_edge_left)
-      .line(points.top_edge_left)
-      .line(points.top_center)
+    paths.pocketTop = new Path()
+      .move(points.topCenter)
+      .line(points.topEdgeRight)
+      .line(points.bottomEdgeRight)
+      .line(points.pocketCenterBottom)
+      .line(points.bottomEdgeLeft)
+      .line(points.topEdgeLeft)
+      .line(points.topCenter)
 
       .close()
       .reverse()
-      .attr('class', 'fabric')
+      .setClass('fabric')
 
     if (sa) {
-      paths.sa = paths.pocket_top.offset(sa).attr('class', 'fabric sa')
+      paths.sa = paths.pocketTop.offset(sa).setClass('fabric sa')
     }
 
-    points.button_position = points.top_center.shift(270, pocket_depth * 0.3 * 0.6)
+    points.buttonPosition = points.topCenter.shift(270, pocketDepth * 0.3 * 0.6)
 
-    snippets.pockettopnotch = new Snippet('buttonhole', points.button_position)
+    snippets.pocketTopNotch = new Snippet('buttonhole', points.buttonPosition)
 
-    let titlescale = options.chest_circum * options.pocket_width
+    let titlescale = options.chestCircum * options.pocketWidth
 
-    points.titleanchor = points.button_position.shiftFractionTowards(points.bottom_edge_right, 0.3)
+    points.titleAnchor = points.buttonPosition.shiftFractionTowards(points.bottomEdgeRight, 0.3)
 
     macro('title', {
-      at: points.titleanchor,
+      at: points.titleAnchor,
       nr: 4,
       title: 'cargopockettop',
       scale: titlescale,
@@ -65,16 +65,16 @@ function draftcargopockettop({
 
     macro('hd', {
       id: 'hWidth',
-      from: points.top_edge_left,
-      to: points.top_edge_right,
-      y: points.top_edge_right.y - sa - 15,
+      from: points.topEdgeLeft,
+      to: points.topEdgeRight,
+      y: points.topEdgeRight.y - sa - 15,
     })
 
     macro('vd', {
       id: 'vHeight',
-      from: points.top_center,
-      to: points.pocket_center_bottom,
-      x: points.top_center.x,
+      from: points.topCenter,
+      to: points.pocketCenterBottom,
+      x: points.topCenter.x,
     })
   }
 
@@ -83,26 +83,9 @@ function draftcargopockettop({
 
 export const cargopockettop = {
   name: 'jasmine.cargopockettop',
+  after: coat,
   options: {
-    chest_circum: {},
-    backlength: {},
-
-    pocket_type: {
-      dflt: 'none',
-      list: ['none', 'kangaroo', 'cargo'],
-      menu: 'style',
-    },
-
-    pocket_width: {},
-    pocket_depth: {},
-
     cargo_pocket_fold: { pct: 15, min: 0, max: 50, menu: 'style.pocket.cargo' },
-
-    cargo_pocket_orientation: {
-      dflt: 'vertical',
-      list: ['vertical', 'horizontal'],
-      menu: 'style.pocket.cargo',
-    },
   },
   draft: draftcargopockettop,
 }

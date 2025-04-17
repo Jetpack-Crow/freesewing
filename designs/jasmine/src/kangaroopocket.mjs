@@ -1,25 +1,36 @@
-function pocketpath({ options, Point, Path, points, paths, Snippet, snippets, sa, macro, part }) {
-  const chesthorizontal = (options.chest_circum * 584) / 2
-  const vertlength = 380 * options.chest_circum * options.backlength
+import { coat } from './coat.mjs'
 
-  const pocket_width = chesthorizontal * options.pocket_width
-  const pocket_depth = vertlength * options.pocket_depth
+function pocketpath({
+  options,
+  Point,
+  Path,
+  points,
+  paths,
+  Snippet,
+  snippets,
+  sa,
+  macro,
+  part,
+  store,
+}) {
+  const pocketWidth = store.get('pocketWidth')
+  const pocketDepth = store.get('pocketDepth')
 
   points.pocket_bottom_center = new Point(0, 0)
-  points.pocket_bottom_outer_edge = new Point(0.8 * pocket_width, 0)
-  points.pocket_outer_point = new Point(pocket_width, pocket_depth * 0.7)
-  points.pocket_top_outer_edge = new Point(0.9 * pocket_width, pocket_depth)
-  points.pocket_top_center = new Point(0, pocket_depth)
+  points.pocket_bottom_outer_edge = new Point(0.8 * pocketWidth, 0)
+  points.pocket_outer_point = new Point(pocketWidth, pocketDepth * 0.7)
+  points.pocketTop_outer_edge = new Point(0.9 * pocketWidth, pocketDepth)
+  points.pocketTop_center = new Point(0, pocketDepth)
 
   let pocket = new Path()
-    .move(points.pocket_top_center)
-    .line(points.pocket_top_outer_edge)
+    .move(points.pocketTop_center)
+    .line(points.pocketTop_outer_edge)
     .line(points.pocket_outer_point)
     .line(points.pocket_bottom_outer_edge)
     .line(points.pocket_bottom_center)
 
     .close()
-    .attr('class', 'fabric')
+    .addClass('fabric')
 
   return pocket
 }
@@ -35,8 +46,9 @@ function draftkangaroopocket({
   sa,
   macro,
   part,
+  store,
 }) {
-  if (options.pocket_type == 'kangaroo') {
+  if (options.pocketType == 'kangaroo') {
     paths.kangaroopocketseam = pocketpath({
       options,
       Point,
@@ -48,9 +60,10 @@ function draftkangaroopocket({
       sa,
       macro,
       part,
+      store,
     })
     macro('hd', {
-      id: 'pocket_width',
+      id: 'pocketWidth',
       from: points.pocket_bottom_center,
       to: points.pocket_outer_point,
       y: points.pocket_outer_point.y,
@@ -58,23 +71,23 @@ function draftkangaroopocket({
     macro('vd', {
       id: 'pocket_height',
       from: points.pocket_bottom_center,
-      to: points.pocket_top_center,
+      to: points.pocketTop_center,
       x: points.pocket_bottom_outer_edge.x,
     })
     macro('cutonfold', {
       from: points.pocket_bottom_center,
-      to: points.pocket_top_center,
+      to: points.pocketTop_center,
       grainline: true,
     })
 
-    let titlescale = options.chest_circum * options.pocket_width * 2
+    let titlescale = options.chestCircum * options.pocketWidth * 2
 
-    points.titleanchor = points.pocket_top_center
+    points.titleAnchor = points.pocketTop_center
       .shiftFractionTowards(points.pocket_bottom_center, 0.5)
       .shiftFractionTowards(points.pocket_outer_point, 0.3)
 
     macro('title', {
-      at: points.titleanchor,
+      at: points.titleAnchor,
       nr: 2,
       title: 'kangaroopocket',
       scale: titlescale,
@@ -90,18 +103,7 @@ function draftkangaroopocket({
 
 export const kangaroopocket = {
   name: 'jasmine.kangaroopocket',
-  options: {
-    chest_circum: {},
-    backlength: {},
-
-    pocket_type: {
-      dflt: 'none',
-      list: ['none', 'kangaroo'],
-      menu: 'style',
-    },
-
-    pocket_width: {},
-    pocket_depth: {},
-  },
+  after: coat,
+  options: {},
   draft: draftkangaroopocket,
 }

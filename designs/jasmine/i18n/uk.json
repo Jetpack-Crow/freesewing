@@ -4,11 +4,11 @@
   "p": { "coat": "Coat"},
   "s": { },
   "o": {
-    "chest_circum": {
+    "chestCircum": {
       "t": "Chest circumference",
       "d": "The measurement around the chest, just behind the elbows. Everything else scales to this, so set it first!"
     },
-    "backlength": {
+    "backLength": {
       "t": "Back length",
       "d": "Measurement from the back of the collar to the base of the tail"
     },
@@ -56,7 +56,7 @@
       "t": "Neck circle percentage",
       "d": "Affects the angle of the neck. 50 is perfect for most dogs, 90 is better for humans"
     },
-    "closure_style": {
+    "closureStyle": {
       "t": "Closure style",
       "d": "Type of closure"
     },
@@ -80,24 +80,24 @@
       "t": "Neck velcro shrink",
       "d": "How much margin the neck velcro should leave on the edges"
     },
-    "pocket_type": {
+    "pocketType": {
       "t": "Pocket type",
       "d": "Whether to generate a pocket, and what kind"
     },
-    "pocket_type.none": {
+    "pocketType.none": {
       "t": "None",
       "d": "Don't generate a pocket"
     },
-    "pocket_type.kangaroo": {
+    "pocketType.kangaroo": {
       "t": "Kangaroo",
       "d": "Generate a hoodie-style kangaroo pocket on the back"
     },
 
-    "pocket_depth": {
+    "pocketDepth": {
       "t": "Pocket depth",
       "d": "Depth of the pocket, as a percentage of the back length"
     },
-    "pocket_width": {
+    "pocketWidth": {
       "t": "Pocket width",
       "d": "Width of the pocket, as a percentage of the chest circumference"
     },

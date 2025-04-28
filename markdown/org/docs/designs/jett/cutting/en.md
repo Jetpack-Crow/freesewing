@@ -1,0 +1,21 @@
+---
+title: "Jett Jacket: Cutting Instructions"
+---
+
+- **Main fabric**
+  - Cut **2 front** mirrored
+  - Cut **1 back** on the fold
+  - Cut **1 yoke** on the fold (if using)
+  - Cut **2 sleeves** mirrored
+  - Cut **2 waistband extensions**
+- **Lining**
+  - Cut **2 front** mirrored
+  - Cut **1 back** on the fold
+  - Cut **1 yoke** on the fold (if using)
+  - Cut **2 sleeves** mirrored
+  - Cut **4 pocket bag front**
+  - Cut **2 pocket welts**
+- **Ribbing**
+  - Cut **1 waistband**
+  - Cut **2 cuffs**
+  - Cut **1 collar**

@@ -1052,17 +1052,23 @@
     ]
   },
   "jett": {
-    "code": "Coder name",
-    "description": "A FreeSewing pattern that needs a description",
-    "design": "Designer name",
-    "difficulty": 1,
+    "code": "Candle",
+    "description": "A FreeSewing pattern for a bomber or letterman jacket",
+    "design": "Candle",
+    "difficulty": 4,
     "lab": true,
     "org": true,
     "tags": [
-      "tagname"
+      "coats",
+      "tops"
     ],
     "techniques": [
-      "techname"
+      "button",
+      "ribbing",
+      "weltPocket",
+      "lining",
+      "setSleeve",
+      "snap"
     ]
   }
 }
